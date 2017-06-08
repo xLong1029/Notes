@@ -1,0 +1,24 @@
+	build 目录是一些webpack的文件，配置参数什么的，一般不用动 
+	config 是vue项目的基本配置文件 
+	node_modules 是项目中安装的依赖模块
+
+	src 源码文件夹，基本上文件都应该放在这里。 
+	―assets 资源文件夹，里面放一些静态资源 
+	―components 这里放的都是各个组件文件 
+	―App.vue App.vue组件 
+	―main.js入口文件
+
+	static 生成好的文件会放在这个目录下。 
+	test 测试文件夹，测试都写在这里 
+	.babelrc babel编译参数，vue开发需要babel编译 
+	.editorconfig 看名字是编辑器配置文件，不晓得是哪款编辑器，没有使用过。 
+	.gitignore 用来过滤一些版本控制的文件，比如node_modules文件夹
+
+	index.html 主页 
+	package.json 项目文件，记载着一些命令和依赖还有简要的项目描述信息 
+	README.md 介绍自己这个项目的，想怎么写怎么写。不会写就参照github上star多的项目，看人家怎么写的
+
+	* 打开 工程目录下的 App.vue
+	template 写 html，script写 js，style写样式
+
+	* static里放的文件，项目打包后路径不会改变，assets里放的文件，项目打包后会被重建，路径会被修改

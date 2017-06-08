@@ -1,0 +1,108 @@
+Vue环境搭建和安装：
+1.先安装 Nodejs ，下载地址 http://nodejs.cn/， 在 Nodejs 根目录下建立 "node_global" 及 "node_cache" 两个文件夹
+
+2.运行cmd命令提示符，查看node和npm版本
+	$ node -v
+	$ npm -v
+
+3.配置 npm 全局模块和 cache 的存放路径
+	$ npm config set prefix "C:\Program Files\nodejs\node_global"
+	$ npm config set cache "C:\Program Files\nodejs\node_cache"
+
+4.并配置好环境变量，
+	系统变量 NODE_PATH:C:\Program Files\nodejs
+	环境变量 PATH:C:\Program Files\nodejs\node_global
+
+5.安装淘宝镜像（可选）
+	$ npm install -g cnpm --registry=https://registry.npm.taobao.org
+
+6.安装vue
+	# 全局安装 vue
+	$ npm install -g vue
+	# 最新稳定 CSP 兼容版本
+	$ npm install vue@csp
+
+7.安装webpack
+	# 全局安装 webpack
+	$ npm install webpack -g
+
+	# 确定已有package.json，没有就npm init 创建
+	$ npm init
+	$ npm install webpack --save-dev
+
+	#查看 webpack 版本信息
+	$ npm info webpack
+
+	#如果要使用 webpack 开发工具，要单独安装 webpack-dev-server
+	$ npm install webpack-dev-server --save-dev
+
+8.安装vue脚手架
+	# 全局安装 vue-cli
+	$ npm install vue-cli -g
+
+	# 创建一个基于 "webpack" 模板的新项目
+	$ vue init webpack project-name
+
+	# 输入项目名称
+	? Project name
+	# 输入项目描述
+	? Project description
+	# 项目作者
+	? Author
+
+	Runtime + Compiler: recommended for most users \\ 选择此项
+
+	# 是否ESlint以作为语法检查工具（N）
+	? Use ESLint to lint your code?(Y/n)
+
+	# 是否需需要单元测试（N）
+	? Setup unit tests with Karma + Mocha?(Y/n)
+	? Setup e2e tests with Nightwatch?(Y/n)
+
+	# 给出提示打开目录中文件，文件安装 package.json中的依赖包(找到项目所在位置，然后cd 项目名)
+	$ cd project-name
+
+	# 安装项目依赖包
+	$ npm install   \\ 会多出node_modules文件夹
+
+	# 安装 vue 路由模块 vue-router 和网络请求模块 vue-resource
+	$ npm install vue-router vue-resource --save
+
+	#启动项目
+	$ npm run dev
+
+9.如果要使用sass，我们需要在启动项目前安装sass的依赖包
+	# 使用save会在package.json中自动添加
+	$ npm install --save-dev sass-loader // sass-loader依赖于node-sass	
+	$ npm install --save-dev node-sass  // 样式标签要修改成 <style lang="sass">
+
+	* 如果 提示错误 ERROR in Missing binding ... Windows 64bit with Node,js 6.x
+	* 可以通过淘宝的npm镜像安装node-sass。
+
+	$ npm install -g cnpm --registry=https://registry.npm.taobao.org  （安装淘宝镜像）
+	$ cnpm install node-sass  --save （使用淘宝镜像安装node-sass）
+
+	* 如果 提示错误 缺少python环境：
+	* 可以通过安装 python 解决，python(v2.7 recommended, v3.x.x is not supported) 
+	* 下载：http://www.python.org/ftp/python/2.7.3/python-2.7.3.msi
+
+	* 如果 提示错误 在此解决方案中一次生成一个项目。若要启用并行生成，请添加“/m”开关。 MSBUILD : error MSB3428: 未能加载 Visual C++ 组件“VCBuild.exe”。要解决此问题， 1) 安装 .NET Fram 
+ework 2.0 SDK；2) 安装 Microsoft Visual Studio 2005；... gyp ERR! build error
+	* 可以通过安装 Microsoft Visual Studio Express 2013 for Windows Desktop 解决 (版本应该不限制，我安装的是上边的版本)	
+
+	# 进入webpack.base.config.js 配置scss
+	在rules添加：
+	{
+    	test: /\.scss$/,
+    	loaders: ["style", "css", "sass"]
+   	}
+
+	# 如果需要在vue文件style标签使用scss的话，需要声明一下 
+	# <style lang="scss" scoped="" type="text/css"></style>
+
+10.端口修改
+	项目中的 config 文件夹下的 index.js，把 port:8080 进行修改即可
+
+
+10.通过上面的一系列命令，我们便成功启动了项目，这时我们可以在浏览器中输入:
+	http://localhost:8080/
