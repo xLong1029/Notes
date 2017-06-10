@@ -9,4 +9,24 @@
 
 	因为 Git 是分布式版本控制系统，所以，每个机器都必须自报家门：你的名字和Email地址。
 
-	* git config命令的--global参数，用了这个参数，表示你这台机器上所有的Git仓库都会使用这个配置，当然也可以对某个仓库指定不同的用户名和Email地址。 
+	* git config命令的--global参数，用了这个参数，表示你这台机器上所有的Git仓库都会使用这个配置，当然也可以对某个仓库指定不同的用户名和Email地址。\
+
+git 提交和推送,拉取和获取的区别
+	推送(push):把您本地仓库的代码推送至服务器
+	提交(commit):把您做的修改,保存到本地仓库中
+
+	git一般分:
+	git add . ->将修改添加至本地缓存
+	git commit -m 'msg' ->将本地缓存保存到本地仓库中
+	git push ->将本地仓库推送至服务器
+	git pull ->将服务器的代码更新到本地仓库中
+
+	拉取(pull):从远程拉取最新版本，自动合并 merge
+	获取(fetch):从远程获取最新版本，到本地，不会自动合并 merge
+  
+	git pull origin master
+	git fetch origin master 
+	git log -p master ../origin/master 
+	git merge orgin/master
+
+	实际使用中  使用git fetch更安全，在merge之前可以看清楚更新情况  再决定是否合并
