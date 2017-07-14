@@ -1,108 +1,109 @@
-Vue»·¾³´î½¨ºÍ°²×°£º
-1.ÏÈ°²×° Nodejs £¬ÏÂÔØµØÖ· http://nodejs.cn/£¬ ÔÚ Nodejs ¸ùÄ¿Â¼ÏÂ½¨Á¢ "node_global" ¼° "node_cache" Á½¸öÎÄ¼ş¼Ğ
+Vueç¯å¢ƒæ­å»ºå’Œå®‰è£…ï¼š
+1.å…ˆå®‰è£… Nodejs ï¼Œä¸‹è½½åœ°å€ http://nodejs.cn/ï¼Œ åœ¨ Nodejs æ ¹ç›®å½•ä¸‹å»ºç«‹ "node_global" åŠ "node_cache" ä¸¤ä¸ªæ–‡ä»¶å¤¹
 
-2.ÔËĞĞcmdÃüÁîÌáÊ¾·û£¬²é¿´nodeºÍnpm°æ±¾
+2.è¿è¡Œcmdå‘½ä»¤æç¤ºç¬¦ï¼ŒæŸ¥çœ‹nodeå’Œnpmç‰ˆæœ¬
 	$ node -v
 	$ npm -v
 
-3.ÅäÖÃ npm È«¾ÖÄ£¿éºÍ cache µÄ´æ·ÅÂ·¾¶
+3.é…ç½® npm å…¨å±€æ¨¡å—å’Œ cache çš„å­˜æ”¾è·¯å¾„
 	$ npm config set prefix "C:\Program Files\nodejs\node_global"
 	$ npm config set cache "C:\Program Files\nodejs\node_cache"
 
-4.²¢ÅäÖÃºÃ»·¾³±äÁ¿£¬
-	ÏµÍ³±äÁ¿ NODE_PATH:C:\Program Files\nodejs
-	»·¾³±äÁ¿ PATH:C:\Program Files\nodejs\node_global
+4.å¹¶é…ç½®å¥½ç¯å¢ƒå˜é‡ï¼Œ
+	ç³»ç»Ÿå˜é‡ NODE_PATH:C:\Program Files\nodejs
+	ç¯å¢ƒå˜é‡ PATH:C:\Program Files\nodejs\node_global
 
-5.°²×°ÌÔ±¦¾µÏñ£¨¿ÉÑ¡£©
+5.å®‰è£…æ·˜å®é•œåƒï¼ˆå¯é€‰ï¼‰
 	$ npm install -g cnpm --registry=https://registry.npm.taobao.org
 
-6.°²×°vue
-	# È«¾Ö°²×° vue
+6.å®‰è£…vue
+	# å…¨å±€å®‰è£… vue
 	$ npm install -g vue
-	# ×îĞÂÎÈ¶¨ CSP ¼æÈİ°æ±¾
+	# æœ€æ–°ç¨³å®š CSP å…¼å®¹ç‰ˆæœ¬
 	$ npm install vue@csp
 
-7.°²×°webpack
-	# È«¾Ö°²×° webpack
+7.å®‰è£…webpack
+	# å…¨å±€å®‰è£… webpack
 	$ npm install webpack -g
 
-	# È·¶¨ÒÑÓĞpackage.json£¬Ã»ÓĞ¾Ínpm init ´´½¨
+	# ç¡®å®šå·²æœ‰package.jsonï¼Œæ²¡æœ‰å°±npm init åˆ›å»º
 	$ npm init
 	$ npm install webpack --save-dev
 
-	#²é¿´ webpack °æ±¾ĞÅÏ¢
+	#æŸ¥çœ‹ webpack ç‰ˆæœ¬ä¿¡æ¯
 	$ npm info webpack
 
-	#Èç¹ûÒªÊ¹ÓÃ webpack ¿ª·¢¹¤¾ß£¬Òªµ¥¶À°²×° webpack-dev-server
+	#å¦‚æœè¦ä½¿ç”¨ webpack å¼€å‘å·¥å…·ï¼Œè¦å•ç‹¬å®‰è£… webpack-dev-server
 	$ npm install webpack-dev-server --save-dev
 
-8.°²×°vue½ÅÊÖ¼Ü
-	# È«¾Ö°²×° vue-cli
+8.å®‰è£…vueè„šæ‰‹æ¶
+	# å…¨å±€å®‰è£… vue-cli
 	$ npm install vue-cli -g
 
-	# ´´½¨Ò»¸ö»ùÓÚ "webpack" Ä£°åµÄĞÂÏîÄ¿
+9.åˆ›å»ºé¡¹ç›®
+	# åˆ›å»ºä¸€ä¸ªåŸºäº "webpack" æ¨¡æ¿çš„æ–°é¡¹ç›®
 	$ vue init webpack project-name
 
-	# ÊäÈëÏîÄ¿Ãû³Æ
+	# è¾“å…¥é¡¹ç›®åç§°
 	? Project name
-	# ÊäÈëÏîÄ¿ÃèÊö
+	# è¾“å…¥é¡¹ç›®æè¿°
 	? Project description
-	# ÏîÄ¿×÷Õß
+	# é¡¹ç›®ä½œè€…
 	? Author
 
-	Runtime + Compiler: recommended for most users \\ Ñ¡Ôñ´ËÏî
+	Runtime + Compiler: recommended for most users \\ é€‰æ‹©æ­¤é¡¹
 
-	# ÊÇ·ñESlintÒÔ×÷ÎªÓï·¨¼ì²é¹¤¾ß£¨N£©
+	# æ˜¯å¦ESlintä»¥ä½œä¸ºè¯­æ³•æ£€æŸ¥å·¥å…·ï¼ˆNï¼‰
 	? Use ESLint to lint your code?(Y/n)
 
-	# ÊÇ·ñĞèĞèÒªµ¥Ôª²âÊÔ£¨N£©
+	# æ˜¯å¦éœ€éœ€è¦å•å…ƒæµ‹è¯•ï¼ˆNï¼‰
 	? Setup unit tests with Karma + Mocha?(Y/n)
 	? Setup e2e tests with Nightwatch?(Y/n)
 
-	# ¸ø³öÌáÊ¾´ò¿ªÄ¿Â¼ÖĞÎÄ¼ş£¬ÎÄ¼ş°²×° package.jsonÖĞµÄÒÀÀµ°ü(ÕÒµ½ÏîÄ¿ËùÔÚÎ»ÖÃ£¬È»ºócd ÏîÄ¿Ãû)
+	# ç»™å‡ºæç¤ºæ‰“å¼€ç›®å½•ä¸­æ–‡ä»¶ï¼Œæ–‡ä»¶å®‰è£… package.jsonä¸­çš„ä¾èµ–åŒ…(æ‰¾åˆ°é¡¹ç›®æ‰€åœ¨ä½ç½®ï¼Œç„¶åcd é¡¹ç›®å)
 	$ cd project-name
 
-	# °²×°ÏîÄ¿ÒÀÀµ°ü
-	$ npm install   \\ »á¶à³önode_modulesÎÄ¼ş¼Ğ
+	# å®‰è£…é¡¹ç›®ä¾èµ–åŒ…
+	$ npm install   \\ ä¼šå¤šå‡ºnode_modulesæ–‡ä»¶å¤¹
 
-	# °²×° vue Â·ÓÉÄ£¿é vue-router ºÍÍøÂçÇëÇóÄ£¿é vue-resource
+	# å®‰è£… vue è·¯ç”±æ¨¡å— vue-router å’Œç½‘ç»œè¯·æ±‚æ¨¡å— vue-resource
 	$ npm install vue-router vue-resource --save
 
-	#Æô¶¯ÏîÄ¿
+	#å¯åŠ¨é¡¹ç›®
 	$ npm run dev
 
-9.Èç¹ûÒªÊ¹ÓÃsass£¬ÎÒÃÇĞèÒªÔÚÆô¶¯ÏîÄ¿Ç°°²×°sassµÄÒÀÀµ°ü
-	# Ê¹ÓÃsave»áÔÚpackage.jsonÖĞ×Ô¶¯Ìí¼Ó
-	$ npm install --save-dev sass-loader // sass-loaderÒÀÀµÓÚnode-sass	
-	$ npm install --save-dev node-sass  // ÑùÊ½±êÇ©ÒªĞŞ¸Ä³É <style lang="sass">
+10.å¦‚æœè¦ä½¿ç”¨sassï¼Œæˆ‘ä»¬éœ€è¦åœ¨å¯åŠ¨é¡¹ç›®å‰å®‰è£…sassçš„ä¾èµ–åŒ…
+	# ä½¿ç”¨saveä¼šåœ¨package.jsonä¸­è‡ªåŠ¨æ·»åŠ 
+	$ npm install --save-dev sass-loader // sass-loaderä¾èµ–äºnode-sass	
+	$ npm install --save-dev node-sass  // æ ·å¼æ ‡ç­¾è¦ä¿®æ”¹æˆ <style lang="sass">
 
-	* Èç¹û ÌáÊ¾´íÎó ERROR in Missing binding ... Windows 64bit with Node,js 6.x
-	* ¿ÉÒÔÍ¨¹ıÌÔ±¦µÄnpm¾µÏñ°²×°node-sass¡£
+	* å¦‚æœ æç¤ºé”™è¯¯ ERROR in Missing binding ... Windows 64bit with Node,js 6.x
+	* å¯ä»¥é€šè¿‡æ·˜å®çš„npmé•œåƒå®‰è£…node-sassã€‚
 
-	$ npm install -g cnpm --registry=https://registry.npm.taobao.org  £¨°²×°ÌÔ±¦¾µÏñ£©
-	$ cnpm install node-sass  --save £¨Ê¹ÓÃÌÔ±¦¾µÏñ°²×°node-sass£©
+	$ npm install -g cnpm --registry=https://registry.npm.taobao.org  ï¼ˆå®‰è£…æ·˜å®é•œåƒï¼‰
+	$ cnpm install node-sass  --save ï¼ˆä½¿ç”¨æ·˜å®é•œåƒå®‰è£…node-sassï¼‰
 
-	* Èç¹û ÌáÊ¾´íÎó È±ÉÙpython»·¾³£º
-	* ¿ÉÒÔÍ¨¹ı°²×° python ½â¾ö£¬python(v2.7 recommended, v3.x.x is not supported) 
-	* ÏÂÔØ£ºhttp://www.python.org/ftp/python/2.7.3/python-2.7.3.msi
+	* å¦‚æœ æç¤ºé”™è¯¯ ç¼ºå°‘pythonç¯å¢ƒï¼š
+	* å¯ä»¥é€šè¿‡å®‰è£… python è§£å†³ï¼Œpython(v2.7 recommended, v3.x.x is not supported) 
+	* ä¸‹è½½ï¼šhttp://www.python.org/ftp/python/2.7.3/python-2.7.3.msi
 
-	* Èç¹û ÌáÊ¾´íÎó ÔÚ´Ë½â¾ö·½°¸ÖĞÒ»´ÎÉú³ÉÒ»¸öÏîÄ¿¡£ÈôÒªÆôÓÃ²¢ĞĞÉú³É£¬ÇëÌí¼Ó¡°/m¡±¿ª¹Ø¡£ MSBUILD : error MSB3428: Î´ÄÜ¼ÓÔØ Visual C++ ×é¼ş¡°VCBuild.exe¡±¡£Òª½â¾ö´ËÎÊÌâ£¬ 1) °²×° .NET Fram 
-ework 2.0 SDK£»2) °²×° Microsoft Visual Studio 2005£»... gyp ERR! build error
-	* ¿ÉÒÔÍ¨¹ı°²×° Microsoft Visual Studio Express 2013 for Windows Desktop ½â¾ö (°æ±¾Ó¦¸Ã²»ÏŞÖÆ£¬ÎÒ°²×°µÄÊÇÉÏ±ßµÄ°æ±¾)	
+	* å¦‚æœ æç¤ºé”™è¯¯ åœ¨æ­¤è§£å†³æ–¹æ¡ˆä¸­ä¸€æ¬¡ç”Ÿæˆä¸€ä¸ªé¡¹ç›®ã€‚è‹¥è¦å¯ç”¨å¹¶è¡Œç”Ÿæˆï¼Œè¯·æ·»åŠ â€œ/mâ€å¼€å…³ã€‚ MSBUILD : error MSB3428: æœªèƒ½åŠ è½½ Visual C++ ç»„ä»¶â€œVCBuild.exeâ€ã€‚è¦è§£å†³æ­¤é—®é¢˜ï¼Œ 1) å®‰è£… .NET Fram 
+ework 2.0 SDKï¼›2) å®‰è£… Microsoft Visual Studio 2005ï¼›... gyp ERR! build error
+	* å¯ä»¥é€šè¿‡å®‰è£… Microsoft Visual Studio Express 2013 for Windows Desktop è§£å†³ (ç‰ˆæœ¬åº”è¯¥ä¸é™åˆ¶ï¼Œæˆ‘å®‰è£…çš„æ˜¯ä¸Šè¾¹çš„ç‰ˆæœ¬)	
 
-	# ½øÈëwebpack.base.config.js ÅäÖÃscss
-	ÔÚrulesÌí¼Ó£º
+	# è¿›å…¥webpack.base.config.js é…ç½®scss
+	åœ¨rulesæ·»åŠ ï¼š
 	{
     	test: /\.scss$/,
     	loaders: ["style", "css", "sass"]
    	}
 
-	# Èç¹ûĞèÒªÔÚvueÎÄ¼şstyle±êÇ©Ê¹ÓÃscssµÄ»°£¬ĞèÒªÉùÃ÷Ò»ÏÂ 
+	# å¦‚æœéœ€è¦åœ¨vueæ–‡ä»¶styleæ ‡ç­¾ä½¿ç”¨scssçš„è¯ï¼Œéœ€è¦å£°æ˜ä¸€ä¸‹ 
 	# <style lang="scss" scoped="" type="text/css"></style>
 
-10.¶Ë¿ÚĞŞ¸Ä
-	ÏîÄ¿ÖĞµÄ config ÎÄ¼ş¼ĞÏÂµÄ index.js£¬°Ñ port:8080 ½øĞĞĞŞ¸Ä¼´¿É
+11.ç«¯å£ä¿®æ”¹
+	é¡¹ç›®ä¸­çš„ config æ–‡ä»¶å¤¹ä¸‹çš„ index.jsï¼ŒæŠŠ port:8080 è¿›è¡Œä¿®æ”¹å³å¯
 
 
-10.Í¨¹ıÉÏÃæµÄÒ»ÏµÁĞÃüÁî£¬ÎÒÃÇ±ã³É¹¦Æô¶¯ÁËÏîÄ¿£¬ÕâÊ±ÎÒÃÇ¿ÉÒÔÔÚä¯ÀÀÆ÷ÖĞÊäÈë:
+12.é€šè¿‡ä¸Šé¢çš„ä¸€ç³»åˆ—å‘½ä»¤ï¼Œæˆ‘ä»¬ä¾¿æˆåŠŸå¯åŠ¨äº†é¡¹ç›®ï¼Œè¿™æ—¶æˆ‘ä»¬å¯ä»¥åœ¨æµè§ˆå™¨ä¸­è¾“å…¥:
 	http://localhost:8080/
