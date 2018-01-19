@@ -1,0 +1,21 @@
+1.在用Create-reat-app创建的React项目中用sass编译出来的样式，统一自动加有额外的前缀
+    例如：原样式 .container{...}，编译后为.xxx_container{...}
+    导致渲染时浏览器无法显示样式
+
+    解决方法：
+    在node_modules/react-scripts/config下找到 webpack.config.dev.js 文件，在 exclude 中添加 /.scss$/,
+    {
+        test: /\.scss$/,
+        loaders: ["style-loader","css-loader?sourceMap","sass-loader?sourceMap"],
+    }
+    如果要在生产环境中生效，需要在webpack.config.prod.js做同样的配置。
+
+2.在Vue项目中，列表页，如果删除了该列表最后一页的唯一项后，更新列表页获取列表页有误
+    例如：当前列表页总共有3页，最后一页即第三页只有唯一一个数据，删除该数据后，应更新列表页，获取得到2页，但由于当前页码没改变，所以还是传递第3页的参数给后端，所以后端会返回无法获取到第三页。
+    解决方法：
+        // 判断是否为最后一页的唯一项被删除
+        if(this.page.pageNo > 1 && this.listData.length <= 1){
+            this.page.pageNo--;
+            this.page.pageCount--;
+        }
+    * 删除最后一项后，传递上一页的参数给后端，重新获取数据
