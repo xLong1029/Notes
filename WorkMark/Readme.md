@@ -31,7 +31,8 @@
 
 ## Create-reat-app/ 使用Browser去掉Url中的“#”
 * 解决方法
-![Image text](./images/react-route-browser-history.png)
+![Image text](images/react-route-browser-history.png)
+
 *在react-router 4将Browser History改为BrowserRouter
 
 ## Vue/ 列表页，如果删除了该列表最后一页的唯一项后，更新列表页获取列表页有误
