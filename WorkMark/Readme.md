@@ -4,10 +4,7 @@
 * 解决方法
 
 在node_modules/react-scripts/config下找到 webpack.config.dev.js 文件，在 exclude 中添加 /.scss$/,
-{
-    test: /\.scss$/,
-    loaders: ["style-loader","css-loader?sourceMap","sass-loader?sourceMap"],
-}
+![Image text](images/react-scss.png)
 如果要在生产环境中生效，需要在webpack.config.prod.js做同样的配置。
 
 ## Create-reat-app/ 使用固定路径
@@ -16,13 +13,7 @@
 * 解决方法
 
 需要在webpack.config.dev.js里添加如下配置：
-// 定义别名和插件位置，其中__dirname为项目主要根目录
-'@': path.resolve('./src'),
-'api': path.resolve('./src/api'),
-'pages': path.resolve('./src/pages'),
-'components': path.resolve('./src/components'),
-'styles': path.resolve('./src/styles'),
-'images': path.resolve('./src/images'),
+![Image text](images/react-path.png)
 
 修改后可直接写相对路径"@/xxx/xxx"即"src/xxx/xxx"
 
@@ -39,10 +30,5 @@
 例如：当前列表页总共有3页，最后一页即第三页只有唯一一个数据，删除该数据后，应更新列表页，获取得到2页，但由于当前页码没改变，所以还是传递第3页的参数给后端，所以后端会返回无法获取到第三页。
 
 * 解决方法
-
-    // 判断是否为最后一页的唯一项被删除
-    if(this.page.pageNo > 1 && this.listData.length <= 1){
-        this.page.pageNo--;
-        this.page.pageCount--;
-    }
-    删除最后一项后，传递上一页的参数给后端，重新获取数据
+![Image text](images/vue-delete.jpg)
+删除最后一项后，传递上一页的参数给后端，重新获取数据
