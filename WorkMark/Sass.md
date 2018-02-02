@@ -3,7 +3,7 @@
 * 报错如下
 > node-sass@4.7.2 install E:\project\xlong-test-vue\node_modules\node-sass  
 > node scripts/install.js  
-
+> 
 > gyp verb ensuring that file exists: C:\Python27\python.exe  
 > gyp ERR! configure error  
 > gyp ERR! stack Error: Can't find Python executable "python", you can set the PYTHON env variable.  
@@ -12,7 +12,7 @@
 > gyp ERR! stack     at E:\project\xlong-test-vue\node_modules\graceful-fs\polyfills.js:284:29  
 > gyp ERR! stack     at FSReqWrap.oncomplete (fs.js:152:21)  
 > gyp ERR! System Windows_NT 10.0.10240  
-
+> 
 > npm ERR! node-sass@4.7.2 postinstall: `node scripts/build.js`  
 > npm ERR! Exit status 1  
 > npm ERR!  
@@ -30,11 +30,11 @@
 > 在此解决方案中一次生成一个项目。若要启用并行生成，请添加“/m”开关。  
 > 生成启动时间为 2018/2/2 11:23:24。  
 > MSBUILD : error MSB4132: 无法识别工具版本“2.0”。可用的工具版本为 "4.0"。  
-
+> 
 > 生成失败。  
-  
+> 
 >   MSBUILD : error MSB4132: 无法识别工具版本“2.0”。可用的工具版本为 "4.0"。  
-  
+> 
 >     0 个警告  
 >     1 个错误  
 
