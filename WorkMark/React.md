@@ -1,11 +1,13 @@
 ## Create-reat-app/ 创建antd-mobile开发
-npm install -g create-react-app   /* 安装create-react-app，建议使用cnpm */  
-create-react-app myapp            /* 使用命令创建应用，myapp为项目名称 */  
-cd myapp                          /* 进入目录，然后启动 */
-npm start
+> npm install -g create-react-app   /* 安装create-react-app，建议使用cnpm */  
+> create-react-app myapp            /* 使用命令创建应用，myapp为项目名称 */  
+> cd myapp                          /* 进入目录，然后启动 */
+> npm start
 
 *生成项目后，脚手架为了“优雅”隐藏了所有的webpack相关的配置文件，此时查看myapp文件夹目录，会发现找不到任何webpack配置文件。执行以下命令：  
-npm run eject  
+
+> npm run eject  
+
 可以看到完整的项目结构
 
 ## Create-reat-app/ 用sass编译出来的样式有乱码前缀
