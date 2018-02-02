@@ -44,5 +44,7 @@ MSBUILD : error MSB4132: 无法识别工具版本“2.0”。可用的工具版�
 下载 Visual C++ 2015 Build Tools，安装时，选择自定义安装，勾选系统版本对应的Windows SDKs ，直至安装完毕  
 ![Image text](images/sass-1.png)  
 ![Image text](images/sass-2.png)  
-在报错的项目内，重新执行 npm install --msvs_version 2015 进行安装项目依赖
+或者，在报错项目内执行 npm config set msvs_version 2015 --global 进行安装项目依赖
+
+以上方法试过后重新执行 npm install node-sass
 
