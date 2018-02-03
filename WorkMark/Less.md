@@ -61,7 +61,7 @@ rem是CSS3新增的一个相对单位，使用rem为元素设定的是相对大�
  @media screen and (min-width:480px){ html{ font-size:18px; } }  
  @media screen and (min-width:560px){ html{ font-size:21px; } }  
  @media screen and (min-width:640px){ html{ font-size:24px; } }  
-</pres>
+</pre>
 
 但我个人觉得没必要设置这么多，应该根据具体需求来设置，所以我设置的就比较少，而且也比较随意，主要看页面显示效果是否可观即可。  
 我的设置方法，以iPhone6的375px为基准，比它大的来计算：
