@@ -20,7 +20,7 @@
 
 *解决方法
 下载 Python2.7，安装时，勾选将 Add Python.exe to PATH，即添加至环境变量，直至安装完毕  
-![Image text](images/sass-2.png)  
+![Image text](images/sass-3.png)  
 
 * 报错如下  
 > gyp info spawn C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe  
