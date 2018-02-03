@@ -73,23 +73,23 @@ rem是CSS3新增的一个相对单位，使用rem为元素设定的是相对大�
 平时切图得到的是设计图片大小，但实际开发时需要设置成等比大小。  
 例如我们得到的640px宽的设计稿切下来的一个图标大小为64*64px，css里设置图标的高宽换算成设计稿中的1/2（至少是1/2，如果设计稿分辨率很大，也可能会换算成1/3，这里涉及到移动设备的逻辑分辨率和物理分辨率问题，可自行查阅资料），即：  
 
-> .icon{
->    width:32px;
->    height:32px;
+> .icon{  
+>    width:32px;  
+>    height:32px;  
 > }
 
 这样有个问题，就是每次我们切图写css都需要进行一半的换算，这时候我们可以使用less或者sass来减少这部分的工作量，我原来是用sass，现在尝试用less，不太了解的建议看一下官方文档。  
 
 设置如下：
-> @root_ft_size : 100;   // 根字体大小(单位px)
-> @rem: 1rem/ @root_ft_size;  // 单位px转换rem
-> @half_rem: 0.5rem/ @root_ft_size;    // 单位px转换1/2rem  
+> @root_ft_size : 100;   // 根字体大小(单位px)  
+> @rem: 1rem/ @root_ft_size;  // 单位px转换rem  
+> @half_rem: 0.5rem/ @root_ft_size;    // 单位px转换1/2rem    
 
 那么上面的例子则可以写为：
 
-> .icon{
->    width:64*half_rem;
->    height:64*half_rem;
+> .icon{  
+>    width:64*half_rem;  
+>    height:64*half_rem;  
 > }
 
 这样，我们就不用再进行换算，切图是多大就写多大就好啦。
