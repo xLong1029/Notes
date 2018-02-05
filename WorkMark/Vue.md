@@ -17,7 +17,10 @@
 * 解决方法
 在conifg文件夹下找到index.js
 将
+<br/>
 > host: 'localhost'
 改成
+<br/>
 > host: '0.0.0.0'
+<br/>
 重新run dev即可
