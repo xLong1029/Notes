@@ -9,7 +9,25 @@
 例如：当前列表页总共有3页，最后一页即第三页只有唯一一个数据，删除该数据后，应更新列表页，获取得到2页，但由于当前页码没改变，所以还是传递第3页的参数给后端，所以后端会返回无法获取到第三页。
 
 * 解决方法  
-![Image text](images/vue-delete.jpg)  
+
+<pre>
+this.apiDelete().then(res => {
+    this.pageLoading = false;
+    if(res.code == 200){
+        this.$Message.success('删除成功!');
+        // 判断是否为最后一页的唯一项被删除
+        if(this.page.pageNo > 1 && this.listData.length <= 1){
+            this.page.pageNo--;
+            this.page.pageCount--;
+        }
+        // 更新列表
+        this.updateList();
+        // 清空选项列表
+        this.clearSelect();
+    }
+    else console.log(res);
+}).catch(err => this.$Message.error('删除失败！'))
+</pre>
 
 删除最后一项后，传递上一页的参数给后端，重新获取数据
 
