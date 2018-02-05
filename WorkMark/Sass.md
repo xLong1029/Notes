@@ -21,7 +21,8 @@
 解决方法
 <br/>
 <br/>
-下载 Python2.7，安装时，勾选将 Add Python.exe to PATH，即添加至环境变量，直至安装完毕  
+下载 Python2.7，安装时，勾选将 Add Python.exe to PATH，即添加至环境变量，直至安装完毕
+<br/>
 ![Image text](images/sass-3.png)
 <br/>
 
