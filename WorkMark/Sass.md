@@ -1,6 +1,6 @@
 ## Sass&Webpack/ 项目中npm install时遇到安装Sass依赖时可能出现的问题
 
-* 报错如下
+* 1.报错如下
 > node-sass@4.7.2 install E:\project\xlong-test-vue\node_modules\node-sass  
 > node scripts/install.js  
 > 
@@ -17,14 +17,15 @@
 > npm ERR! Exit status 1  
 > npm ERR!  
 > npm ERR! Failed at the node-sass@4.7.2 postinstall script.  
-
-*解决方法
+<br/>
+解决方法
+<br/>
 <br/>
 下载 Python2.7，安装时，勾选将 Add Python.exe to PATH，即添加至环境变量，直至安装完毕  
 ![Image text](images/sass-3.png)
 <br/>
 
-* 报错如下  
+* 2.报错如下  
 > gyp info spawn C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe  
 > gyp info spawn args [ 'build/binding.sln',  
 > gyp info spawn args   '/nologo',  
@@ -40,13 +41,16 @@
 >     0 个警告  
 >     1 个错误 
 
-
-*解决方法
 <br/>
-下载 Visual C++ 2015 Build Tools，安装时，选择自定义安装  
+解决方法
+<br/>
+<br/>
+下载 Visual C++ 2015 Build Tools，安装时，选择自定义安装
+<br/>
 ![Image text](images/sass-1.png)
 <br/>
-勾选系统版本对应的Windows SDKs ，直至安装完毕  
+勾选系统版本对应的Windows SDKs ，直至安装完毕
+<br/>
 ![Image text](images/sass-2.png)
 <br/>
 在报错项目内执行 npm config set msvs_version 2015 --global 进行安装项目依赖
