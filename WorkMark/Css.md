@@ -17,7 +17,7 @@
 * 制作成字体包
 
     使用 IcoMoon 可以在线生成字体包，地址：https://icomoon.io/app/#/select
-    
+
     <br/>
     1.打开选择 Import Icons  
     
@@ -58,6 +58,7 @@
 
     <br/>
     3.在页面中引用css
+    <br/>
     <br/>
     普通index.html里是这样引用:
 
