@@ -1,12 +1,14 @@
 ## Create-reat-app/ 创建antd-mobile开发
-> npm install -g create-react-app   /* 安装create-react-app，建议使用cnpm */  
-> create-react-app myapp            /* 使用命令创建应用，myapp为项目名称 */  
-> cd myapp                          /* 进入目录，然后启动 */
-> npm start
+<pre>
+ npm install -g create-react-app   /* 安装create-react-app，建议使用cnpm */  
+ create-react-app myapp            /* 使用命令创建应用，myapp为项目名称 */  
+ cd myapp                          /* 进入目录，然后启动 */
+ npm start
+</pre>
 
 *生成项目后，脚手架为了“优雅”隐藏了所有的webpack相关的配置文件，此时查看myapp文件夹目录，会发现找不到任何webpack配置文件。执行以下命令：  
 
-> npm run eject  
+<pre>npm run eject</pre>
 
 可以看到完整的项目结构
 
@@ -15,8 +17,17 @@
 
 * 解决方法
 
-在node_modules/react-scripts/config下找到 webpack.config.dev.js 文件，在 exclude 中添加 /.scss$/,  
-![Image text](images/react-scss.png)  
+在config文件夹下找到 webpack.config.dev.js 文件，在 module 中添加 /.scss$/,  
+<pre>
+module: {
+    rules:[
+        {
+            test: /\.scss$/,
+            loaders: ["style-loader","css-loader?sourceMap","sass-loader?sourceMap"],
+        }
+    ]
+}
+</pre>
 
 如果要在生产环境中生效，需要在webpack.config.prod.js做同样的配置。
 
@@ -26,7 +37,18 @@
 * 解决方法
 
 需要在webpack.config.dev.js里添加如下配置：  
-![Image text](images/react-path.png)  
+<pre>
+alias: {
+    // 定义别名和插件位置
+    '@': path.resolve('./src'),
+    'api': path.resolve('./src/api'),
+    'pages': path.resolve('./src/pages'),
+    'components': path.resolve('./src/components'),
+    'styles': path.resolve('./src/styles'),
+    'images': path.resolve('./src/images'),
+    'js': path.resolve('./src/js'),
+}
+</pre> 
 
 修改后可直接写相对路径"@/xxx/xxx"即"src/xxx/xxx"
 
