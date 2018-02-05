@@ -1,12 +1,16 @@
 ## Css&IconFont/ 如何在项目中使用字体图标
 
 * 获取/绘制SVG图标
+    <br/>
     一种可缩放矢量图形，SVG文件比那些GIF和JPEG格式的文件要小很多，因而下载也很快。
+    <br/>
     <br/>
     SVG图标可到网上直接下载，推荐网址：
     <br/>
     阿里云图标：http://www.iconfont.cn/
+    <br/>
     熊猫图标：https://www.easyicon.net/
+    <br/>
     <br/>
     没有满意的图标就自己用设计软件绘制啦，最后导出保存成svg格式即可
 
