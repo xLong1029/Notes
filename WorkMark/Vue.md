@@ -16,11 +16,4 @@
 ## Vue/ 新版vue本地只能通过localhost访问项目，无法通过IP地址访问
 * 解决方法  
 
-在conifg文件夹下找到index.js，将  
-
-> host: 'localhost'
-改成  
-
-> host: '0.0.0.0'  
-
-重新run dev即可
+在conifg文件夹下找到index.js，将 host: 'localhost' 改成 host: '0.0.0.0' ，重新run dev即可
