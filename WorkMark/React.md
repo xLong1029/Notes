@@ -68,8 +68,8 @@ alias: {
 import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.render((
-    &gt;BrowserRouter&lt;
-      &gt;App /&lt;
-    &gt;/BrowserRouter&lt;
+    &lt;BrowserRouter&gt;
+      &lt;App /&gt;
+    &lt;/BrowserRouter&gt;
 ), document.getElementById('app'));
 </pre>
