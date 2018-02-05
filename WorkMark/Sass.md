@@ -20,7 +20,7 @@
  npm ERR! Failed at the node-sass@4.7.2 postinstall script.  
 </pre>
 
-<b解决方法</b>  
+<b>解决方法</b>  
 
 下载 Python2.7，安装时，勾选将 Add Python.exe to PATH，即添加至环境变量，直至安装完毕  
 ![Image text](images/sass-3.png)  
@@ -43,7 +43,7 @@
      1 个错误
 </pre>  
 
-<b解决方法</b   
+<b>解决方法</b>   
 
 下载 Visual C++ 2015 Build Tools，安装时，选择自定义安装  
 ![Image text](images/sass-1.png)  
