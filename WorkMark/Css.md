@@ -61,7 +61,8 @@
     <br/>
     <br/>
     普通index.html里是这样引用:
-
+    
+    <br/>
     <pre> &lt;link rel="stylesheet" href="../css/style.css"&gt; </pre>
 
     vue里我是直接在main.js里引用:
