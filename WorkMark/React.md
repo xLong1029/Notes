@@ -56,18 +56,17 @@ alias: {
 *path.resolve（）方法将一系列路径或路径段解析为绝对路径。语法：path.resolve([from ...], to)，详细用法可看：http://javascript.ruanyifeng.com/nodejs/path.html
 
 ## Create-reat-app/ 使用Browser去掉Url中的“#”
+
 * 解决方法  
-在index.js做如下修改
+
+在index.js做如下修改  
+
 <pre>
-// 路由
 import { BrowserRouter } from 'react-router-dom';
 
-// 路由只能有一个子元素
 ReactDOM.render((
     &gt;BrowserRouter&lt;
       &gt;App /&lt;
     &gt;/BrowserRouter&lt;
 ), document.getElementById('app'));
 </pre>
-
-*在react-router 4将Browser History改为BrowserRouter
