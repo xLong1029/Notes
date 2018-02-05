@@ -24,7 +24,7 @@
 <br/>
 下载 Python2.7，安装时，勾选将 Add Python.exe to PATH，即添加至环境变量，直至安装完毕  
 ![Image text](images/sass-3.png)
-<br/>
+
 <br/>
 
 * 2.报错如下  
@@ -48,11 +48,9 @@
 <br/>
 <br/>
 下载 Visual C++ 2015 Build Tools，安装时，选择自定义安装  
-
 ![Image text](images/sass-1.png)
 <br/>
 勾选系统版本对应的Windows SDKs ，直至安装完毕  
-
 ![Image text](images/sass-2.png)
 <br/>
 在报错项目内执行 npm config set msvs_version 2015 --global 进行安装项目依赖
