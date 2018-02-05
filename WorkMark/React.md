@@ -52,8 +52,11 @@ alias: {
 
 修改后可直接写相对路径"@/xxx/xxx"即"src/xxx/xxx"
 
-*在任何模块文件内部，可以使用__dirname变量获取当前模块文件所在目录的完整绝对路径。
-*path.resolve（）方法将一系列路径或路径段解析为绝对路径。语法：path.resolve([from ...], to)，详细用法可看：http://javascript.ruanyifeng.com/nodejs/path.html
+*在任何模块文件内部，可以使用__dirname变量获取当前模块文件所在目录的完整绝对路径
+<br/>
+*path.resolve（）方法将一系列路径或路径段解析为绝对路径。语法：path.resolve([from ...], to)
+<br/>
+详细用法可看：http://javascript.ruanyifeng.com/nodejs/path.html
 
 ## Create-reat-app/ 使用Browser去掉Url中的“#”
 
