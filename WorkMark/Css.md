@@ -67,20 +67,14 @@
     <br/>
     普通index.html里是这样引用:
 
-    <pre>
-        &lt;link rel="stylesheet" href="../css/style.css"&gt;
-    </pre>
+    <pre> &lt;link rel="stylesheet" href="../css/style.css"&gt; </pre>
 
     vue里我是直接在main.js里引用:
 
-    <pre>
-        require('./assets/iconfonts/style.css');
-    </pre>
+    <pre> require('./assets/iconfonts/style.css'); </pre>
 
     4.在需要使用图标的页面/组件中，直接加入对应的标签class属性即可
-    <pre>
-        &lt;i class="icon-home"&gt;&lt;/i&gt;
-    </pre>
+    <pre> &lt;i class="icon-home"&gt;&lt;/i&gt;  </pre>
 
     如果图标太多不记得属性名，可以到原来下载的zip文件中，找到demo.html，打开即可看到class属性名啦，其中前缀“icon-”这个是之前在 Preference 里设置的，未设置默认都是“icon-”前缀  
     
