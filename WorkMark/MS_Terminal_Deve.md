@@ -26,9 +26,9 @@
     解决方法（以下以vue为实例）是给A标签添加点击事件：
 
     <pre>
-        &lgt;a class="btn fr" @click="toSearch"&gt;
-				&lgt;i class="icon-search"&gt;&lgt;/i&gt;
-		&lgt;/a&gt;
+        &lt;a class="btn fr" @click="toSearch"&gt;
+				&lt;i class="icon-search"&gt;&lt;/i&gt;
+		&lt;/a&gt;
 
         // 点击事件
         toSearch(){
