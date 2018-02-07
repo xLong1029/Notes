@@ -89,6 +89,6 @@
 
     详情查看 https://github.com/xLong1029/Notes/blob/master/WorkMark/Less.md
 
-* iconFont使用方法
+* IconFont使用方法
 
     详情查看 https://github.com/xLong1029/Notes/blob/master/WorkMark/Css.md
