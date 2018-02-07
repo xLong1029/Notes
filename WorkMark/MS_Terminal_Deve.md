@@ -27,8 +27,8 @@
 
     <pre>
         &lt;a class="btn fr" @click="toSearch"&gt;
-				&lt;i class="icon-search"&gt;&lt;/i&gt;
-		&lt;/a&gt;
+            &lt;i class="icon-search"&gt;&lt;/i&gt;
+        &lt;/a&gt;
 
         // 点击事件
         toSearch(){
