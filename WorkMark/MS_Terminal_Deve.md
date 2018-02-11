@@ -85,6 +85,10 @@
         }
     </pre>
 
+* iOS上同时使用 fixed 和 transition 进行变换时会出现空白
+ 
+    解决方法：transform元素内部不能有absolute、fixed元素，要分离开（这里不好贴代码展示，自行理解）。
+
 * Rem使用方法
 
     详情查看 https://github.com/xLong1029/Notes/blob/master/WorkMark/Less.md
