@@ -57,8 +57,6 @@ this.apiDelete().then(res => {
         assetsRoot: path.resolve(__dirname, '../dist'),
         assetsSubDirectory: 'static',
         assetsPublicPath: './'
-        
-    // 下面的省略 
     ｝
 </pre>
 
