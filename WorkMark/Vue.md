@@ -35,3 +35,30 @@ this.apiDelete().then(res => {
 * 解决方法  
 
 在conifg文件夹下找到index.js，将 host: 'localhost' 改成 host: '0.0.0.0' ，重新run dev即可
+
+## Vue/ 项目build后资源文件报错404的解决方案
+
+当vue项目build后，我们会看到css、js报错404的问题，然后，查看index.html，看到下面的代码：　
+
+<pre>
+    &lt;script type=text/javascript src=/static/js/app.41ce5f66426864089c57.js&gt;&lt;/script&gt;
+</pre>
+
+* 解决方法  
+
+到config文件夹下的index.js文件，找到build.assetsPublicPath，将"/"修改成"./"：  
+
+<pre>
+    build: {
+        // Template for index.html
+        index: path.resolve(__dirname, '../dist/index.html'),
+
+        // Paths
+        assetsRoot: path.resolve(__dirname, '../dist'),
+        assetsSubDirectory: 'static',
+        assetsPublicPath: './'
+        
+    // 下面的省略 
+    ｝
+</pre>
+
