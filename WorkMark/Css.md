@@ -25,28 +25,28 @@
 
     1.打开选择 Import Icons  
     
-    ![Image text](images/Iconfont-1.png) 
+    ![Image text](images/iconfont-1.png) 
 
 
     2.勾选需要的生成字体的图标
 
-    ![Image text](images/Iconfont-2.png)  
+    ![Image text](images/iconfont-2.png)  
 
 
     3.点击 Generate Font 生成字体包
 
-    ![Image text](images/Iconfont-3.png) 
+    ![Image text](images/iconfont-3.png) 
 
 
     4.字体生成后，可以选择 Preference 进行一些属性设置
 
-    ![Image text](images/Iconfont-4.png) 
-    ![Image text](images/Iconfont-5.png) 
+    ![Image text](images/iconfont-4.png) 
+    ![Image text](images/iconfont-5.png) 
 
 
     5.一切设置好后，直接 Download 就行啦
 
-    ![Image text](images/Iconfont-6.png) 
+    ![Image text](images/iconfont-6.png) 
 
 
 
@@ -54,12 +54,12 @@
 
     1.下载的文件，我们只需要 fonts 文件夹和 style.css
 
-    ![Image text](images/Iconfont-7.png) 
+    ![Image text](images/iconfont-7.png) 
 
 
     2.将这2个文件放如到项目的资源管理文件中，我的vue项目是直接放assets里了
 
-    ![Image text](images/Iconfont-8.png) 
+    ![Image text](images/iconfont-8.png) 
 
 
     3.在页面中引用css
@@ -72,7 +72,7 @@
 
     vue里我是直接在main.js里引用:
 
-    <pre> require('./assets/Iconfonts/style.css'); </pre>
+    <pre> require('./assets/iconfonts/style.css'); </pre>
 
 
     4.在需要使用图标的页面/组件中，直接加入对应的标签class属性即可
@@ -80,4 +80,4 @@
 
     如果图标太多不记得属性名，可以到原来下载的zip文件中，找到demo.html，打开即可看到class属性名啦，其中前缀“icon-”这个是之前在 Preference 里设置的，未设置默认都是“icon-”前缀  
     
-    ![Image text](images/Iconfont-9.png) 
+    ![Image text](images/iconfont-9.png) 
