@@ -66,7 +66,7 @@ SVG图标可到网上直接下载，推荐网址:
 ```
 
 vue里我是直接在main.js里引用:
-```html
+```js
     require('./assets/iconfonts/style.css');
 ```
 4.在需要使用图标的页面/组件中，直接加入对应的标签class属性即可

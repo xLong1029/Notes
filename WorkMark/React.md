@@ -1,14 +1,13 @@
 ## Create-reat-app/ 创建antd-mobile开发
-<pre>
- npm install -g create-react-app   /* 安装create-react-app，建议使用cnpm */  
- create-react-app myapp            /* 使用命令创建应用，myapp为项目名称 */  
- cd myapp                          /* 进入目录，然后启动 */
- npm start
-</pre>
+
+> npm install -g create-react-app   /* 安装create-react-app，建议使用cnpm */  
+> create-react-app myapp            /* 使用命令创建应用，myapp为项目名称 */  
+> cd myapp                          /* 进入目录，然后启动 */
+> npm start
 
 *生成项目后，脚手架为了“优雅”隐藏了所有的webpack相关的配置文件，此时查看myapp文件夹目录，会发现找不到任何webpack配置文件。执行以下命令：  
 
-<pre>npm run eject</pre>
+> npm run eject
 
 可以看到完整的项目结构
 
@@ -18,7 +17,7 @@
 * 解决方法
 
 在config文件夹下找到 webpack.config.dev.js 文件，在 module 中添加 /.scss$/,  
-<pre>
+```js
 module: {
     rules:[
         {
@@ -27,7 +26,7 @@ module: {
         }
     ]
 }
-</pre>
+```
 
 如果要在生产环境中生效，需要在webpack.config.prod.js做同样的配置。
 
@@ -36,8 +35,9 @@ module: {
 
 * 解决方法
 
-需要在webpack.config.dev.js里添加如下配置：  
-<pre>
+需要在webpack.config.dev.js里添加如下配置：
+
+```js
 alias: {
     // 定义别名和插件位置
     '@': path.resolve('./src'),
@@ -48,14 +48,14 @@ alias: {
     'images': path.resolve('./src/images'),
     'js': path.resolve('./src/js'),
 }
-</pre> 
+``` 
 
 修改后可直接写相对路径"@/xxx/xxx"即"src/xxx/xxx"
 
-*在任何模块文件内部，可以使用__dirname变量获取当前模块文件所在目录的完整绝对路径
-<br/>
-*path.resolve（）方法将一系列路径或路径段解析为绝对路径。语法：path.resolve([from ...], to)
-<br/>
+* 在任何模块文件内部，可以使用__dirname变量获取当前模块文件所在目录的完整绝对路径
+
+* path.resolve（）方法将一系列路径或路径段解析为绝对路径。语法：path.resolve([from ...], to)
+
 详细用法可看：http://javascript.ruanyifeng.com/nodejs/path.html
 
 ## Create-reat-app/ 使用Browser去掉Url中的“#”
@@ -64,12 +64,12 @@ alias: {
 
 在index.js做如下修改  
 
-<pre>
+```js
 import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.render((
-    &lt;BrowserRouter&gt;
-      &lt;App /&gt;
-    &lt;/BrowserRouter&gt;
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
 ), document.getElementById('app'));
-</pre>
+```

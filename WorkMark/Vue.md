@@ -10,7 +10,7 @@
 
 * 解决方法  
 
-<pre>
+```js
 this.apiDelete().then(res => {
     this.pageLoading = false;
     if(res.code == 200){
@@ -27,7 +27,7 @@ this.apiDelete().then(res => {
     }
     else console.log(res);
 }).catch(err => this.$Message.error('删除失败！'))
-</pre>
+```
 
 删除最后一项后，传递上一页的参数给后端，重新获取数据
 
@@ -40,15 +40,15 @@ this.apiDelete().then(res => {
 
 当vue项目build后，我们会看到css、js报错404的问题，然后，查看index.html，看到下面的代码：　
 
-<pre>
+```js
     &lt;script type=text/javascript src=/static/js/app.41ce5f66426864089c57.js&gt;&lt;/script&gt;
-</pre>
+```
 
 * 解决方法  
 
 到config文件夹下的index.js文件，找到build.assetsPublicPath，将"/"修改成"./"：  
 
-<pre>
+```js
     build: {
         // Template for index.html
         index: path.resolve(__dirname, '../dist/index.html'),
@@ -58,5 +58,4 @@ this.apiDelete().then(res => {
         assetsSubDirectory: 'static',
         assetsPublicPath: './'
     ｝
-</pre>
-
+```
