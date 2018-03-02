@@ -90,10 +90,73 @@ gotoPage(routeName, params, _this){
  
 解决方法：transform元素内部不能有absolute、fixed元素，要分离开（这里不好贴代码展示，自行理解）。
 
-### 五、Rem使用方法
+### 六、iPhoneX底部会空出一段距离，导致设置了fixed的标签栏无法挡住内容
+
+问题描述如图：
+
+![Image text](images/vue-1.png)
+
+解决方案：
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover">
+
+viewport-fit 默认值为auto，改成cover即可
+
+### 七、iPhoneX底部会出现一条挡住标签栏
+
+问题描述如图：
+
+![Image text](images/vue-2.png)
+
+解决方案：
+```CSS
+    // 解决iPhoneX底部当初标签栏的问题
+    @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+        .tabbar {
+            //@tabbar_h和@rem是less里我设置的一个通用变量，用来定义标签栏高度，在其基础上多加30rem;
+            height: @tabbar_h + 30*@rem;
+        }
+
+    }
+```
+
+效果图：
+
+![Image text](images/vue-3.png)
+
+### 八、搜索页面在ios上希望通过输入法键“搜索”直接触发搜索功能
+
+解决方案：
+
+from标签上要加action和submit方法
+
+```HTML
+<form action="#" @submit="getListData()">
+    <i class="icon-search" @click="getListData()"></i>
+    <input type="search" v-model="keyword" placeholder="请输入搜索关键词"/>
+</form>
+```
+
+submit方法中要returm false禁止页面自己提交
+
+```JS
+    // 获取列表内容
+    getListData(){
+        if(this.keyword == ''){
+            this.showWarnModel('请输入关键字', 'warning');
+            return false;
+        }
+
+        // 这部分是api功能代码...
+
+        // 禁止表单自动提交跳转页面
+        return false;
+    }
+```
+
+### 九、Rem使用方法
 
 详情查看 https://github.com/xLong1029/Notes/blob/master/WorkMark/Less.md
 
-### 六、IconFont使用方法
+### 十、IconFont使用方法
 
 详情查看 https://github.com/xLong1029/Notes/blob/master/WorkMark/Css.md
