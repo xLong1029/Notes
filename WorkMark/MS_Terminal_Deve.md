@@ -1,6 +1,14 @@
 ## WebApp/ 移动端开发遇到的一些问题和解决方法
 
-### 一、取消移动端浏览器自带样式
+### 一、Rem使用方法
+
+详情查看 https://github.com/xLong1029/Notes/blob/master/WorkMark/Less.md
+
+### 二、IconFont使用方法
+
+详情查看 https://github.com/xLong1029/Notes/blob/master/WorkMark/Css.md
+
+### 三、取消移动端浏览器自带样式
 
 移动端系统浏览器会自带一些样式，比如输入框、按钮等会有默认样式，需要清除这些样式才能真正显示原有设计的css样式：
 
@@ -20,7 +28,7 @@
     }
 ```
 
-### 二、点击A标签，会出现光标问题
+### 四、点击A标签，会出现光标问题
 
 在移动端即使使用 cursor: pointer; 点击A标签时会显示光标可以输入文字。
 
@@ -42,7 +50,7 @@ gotoPage(routeName, params, _this){
 }
 ```
 
-### 三、移动端访问设置
+### 五、移动端访问设置
 
 ```js        
     function isMobile(){
@@ -86,11 +94,11 @@ gotoPage(routeName, params, _this){
     }
 ```
 
-### 四、iOS上同时使用 fixed 和 transition 进行变换时会出现空白
+### 六、iOS上同时使用 fixed 和 transition 进行变换时会出现空白
  
 解决方法：transform元素内部不能有absolute、fixed元素，要分离开（这里不好贴代码展示，自行理解）。
 
-### 六、iPhoneX底部会空出一段距离，导致设置了fixed的标签栏无法挡住内容
+### 七、iPhoneX底部会空出一段距离，导致设置了fixed的标签栏无法挡住内容
 
 问题描述如图：
 
@@ -101,7 +109,7 @@ gotoPage(routeName, params, _this){
 
 viewport-fit 默认值为auto，改成cover即可
 
-### 七、iPhoneX底部会出现一条挡住标签栏
+### 八、iPhoneX底部会出现一条挡住标签栏
 
 问题描述如图：
 
@@ -123,40 +131,72 @@ viewport-fit 默认值为auto，改成cover即可
 
 ![Image text](images/vue-3.png)
 
-### 八、搜索页面在ios上希望通过输入法键“搜索”直接触发搜索功能
+### 九、搜索页面在ios上希望通过输入法键“搜索”直接触发搜索功能
 
 解决方案：
 
-from标签上要加action和submit方法
+给input添加type="search"后可以使输入法弹出“回车”键。
+加入enter事件后，点击输入法的搜索键可以直接进行搜索（只有安卓有效）：
 
 ```HTML
-<form action="#" @submit="getListData()">
-    <i class="icon-search" @click="getListData()"></i>
-    <input type="search" v-model="keyword" placeholder="请输入搜索关键词"/>
+<input id="keyword" type="search" v-model="keyword" placeholder="请输入搜索关键词" @keyup.enter="getListData(listNum, false)"/>
+```
+
+```JS
+// 获取列表内容
+getListData(){
+    if(this.keyword == ''){
+        this.showWarnModel('请输入关键字', 'warning');
+        return false;
+    }
+    // 这部分是api功能代码...
+}
+```
+
+以上方法测试发现在iOS上无效，输入法无法显示“搜索”键，只有“回车”键。
+
+解决方案：form标签上要加action属性
+
+但是加上action属性后会导致提交表单刷新页面，为了不刷新当前页，直接搜索，需要添加一个iframe并使其隐藏，让表单提交到这个隐藏页面：
+
+```HTML
+<form action="/Search" target="blankFrame">
+    <iframe id="rfFrame" name="blankFrame" src="about:blank" style="display:none;"></iframe> 
+    <i class="icon-search search_btn" @click="getListData(listNum, true)"></i>
+    <input id="keyword" type="search" v-model="keyword" placeholder="请输入搜索关键词" @keyup.enter="getListData(listNum, true)"/>
 </form>
 ```
 
-submit方法中要returm false禁止页面自己提交
+### 十、表单自动填充时会自带黄色背景
 
-```JS
-    // 获取列表内容
-    getListData(){
-        if(this.keyword == ''){
-            this.showWarnModel('请输入关键字', 'warning');
-            return false;
-        }
+chrome表单自动填充后，input文本框的背景会变成偏黄色的，这是由于chrome会默认给自动填充的input表单加上input:-webkit-autofill私有属性。
 
-        // 这部分是api功能代码...
+解决方案：
 
-        // 禁止表单自动提交跳转页面
-        return false;
-    }
+```CSS
+// 移除表单自动填充黄色背景
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill,
+input[type="text"]:focus, input[type="password"]:focus, input[type="search"]:focus, input[type="tel"]:focus, textarea:focus
+{
+    // 去黄
+    -webkit-box-shadow: 0 0 0 1000px white inset;
+    background-color: #fff;
+    background-image: none;
+    // 字体颜色
+    -webkit-text-fill-color: 333;
+    color: #333;
+}
 ```
 
-### 九、Rem使用方法
+### 十一、Input使用type="search"属性后，搜索框会显示"X"图标
 
-详情查看 https://github.com/xLong1029/Notes/blob/master/WorkMark/Less.md
 
-### 十、IconFont使用方法
+解决方案：
 
-详情查看 https://github.com/xLong1029/Notes/blob/master/WorkMark/Css.md
+```CSS
+input[type="search"]::-webkit-search-cancel-button {
+    display: none;
+}
+```
