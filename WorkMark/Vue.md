@@ -143,12 +143,12 @@ created(){
     // 从缓存获取列表数量
     let getListNum = GetCookie('listNum');
     if(getListNum) this.listNum = parseInt(getListNum);
-
-    this.getListData(this.listNum, false);
-
+    
     // 从缓存获取列表滚动高度
     let getScrollH = GetCookie('scrollH');
     if(getScrollH) this.listScrollH = parseInt(getScrollH);
+
+    this.getListData(this.listNum, false);
 },
 mounted(){
     // 监听滚动事件
