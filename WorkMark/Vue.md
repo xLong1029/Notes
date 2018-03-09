@@ -105,7 +105,7 @@ router.beforeEach((to, from, next) => {
 
 借鉴了网上很多种方法，多数是使用缓存记录A的位置scrollH，然后从B返回A时直接设置scrollTo(0, scrollH)到原来位置。
 
-但是这个方法对我并不管用，这样会使winndw绑定的scorll事件触发，请求数据，然后由于各种原因无法让A回到原来的位置。（什么原因不细讲了，具体分析原理可以看这篇文章：https://www.cnblogs.com/minigrasshopper/p/8011748.html，它解释的比较详细）
+但是这个方法对我并不管用，这样会使winndw绑定的scorll事件触发，请求数据，然后由于各种原因无法让A回到原来的位置。（什么原因不细讲了，具体分析原理可以看这篇文章：http://www.jb51.net/article/118592.htm，它解释的比较详细）
 
 * 解决方案：
 
