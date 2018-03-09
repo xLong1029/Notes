@@ -83,3 +83,138 @@ destroyed(){
     window.removeEventListener("scroll",this.scrollPage);
 }
 ```
+
+## Vue/ 单页应用&移动端，页面共用滚动问题
+用Vue开发移动端单页应用时，发现在A页面滚动到X位置，这是跳转到B页面，如果B页面内容够长，B页面也停留到X位置，这是不正常的。
+
+* 解决方案：
+
+使用全局路由钩子函数，路由刷新时让窗口滚到顶部
+
+```js
+router.beforeEach((to, from, next) => {	
+	// A跳转到B，B页面停留在A页面的滚动位置；解决方法：将scrollTop设置为0
+	window.scroll(0, 0);
+	next();
+});
+```
+
+## Vue/ 单页应用&移动端，列表页无限加载，从列表页跳转内容页，再次返回列表页时回到原来位置
+
+如题，在用Vue开发移动端单页应用时，列表页A实现的效果时滚动到底部无限加载数据，从列表页A跳转内容页B，再从B返回A时，希望能保留原来A的当前位置不变。
+
+借鉴了网上很多种方法，多数是使用缓存记录A的位置scrollH，然后从B返回A时直接设置scrollTo(0, scrollH)到原来位置。
+
+但是这个方法对我并不管用，这样会使winndw绑定的scorll事件触发，请求数据，然后由于各种原因无法让A回到原来的位置。（什么原因不细讲了，具体分析原理可以看这篇文章：https://www.cnblogs.com/minigrasshopper/p/8011748.html，它解释的比较详细）
+
+* 解决方案：
+
+```HTML
+<!-- 资讯列表 -->
+<ul class="news_list">
+    <li v-for="(item, index) in newsList" :key="index" class="news_li_item proj_news" @click="gotoDetail(item.id)">
+    <!-- 这里是某个列表内容 -->
+    </li>
+</ul>
+```
+
+```JS
+data() {
+    return{
+        // 资讯列表
+        newsList: [],
+        // 是否显示返回顶部按钮
+        showTopBtn: false,
+        // 显示新闻数量
+        listNum: 10,
+        // 用来监听是否在加载，如果正在加载不再多请求接口
+        loadMoreNow: false,
+        // 列表滚动高度
+        listScrollH: 0,
+    }
+},
+created(){
+    // 从缓存获取列表数量
+    let getListNum = GetCookie('listNum');
+    if(getListNum) this.listNum = parseInt(getListNum);
+
+    this.getListData(this.listNum, false);
+
+    // 从缓存获取列表滚动高度
+    let getScrollH = GetCookie('scrollH');
+    if(getScrollH) this.listScrollH = parseInt(getScrollH);
+},
+mounted(){
+    // 监听滚动事件
+    window.addEventListener('scroll', this.scrollPage);
+},
+method:{
+    // 获取列表内容， num: 请求数量，more：是否加载更多
+    getListData(num, more){
+        // 请求接口
+        Api.DeclareList({
+            pageNum: 1,
+            pageSize: num
+        })
+        .then(res => {
+            if(res.code == 200){
+                this.newsList = res.data.result;
+                // 是否加载更多
+                if(more){
+                    // 请求数量大于返回的数据总量，再无数据可添加
+                    if(this.listNum >= res.data.dataCount) this.loadMoreNow = true;
+                    else this.loadMoreNow = false;
+                }
+                // 第一次页面加载
+                else{
+                    // 获取到缓存滚动高度
+                    if(this.listScrollH > 0){
+                        var _this = this;
+                        this.$nextTick(() => {
+                            scrollTo(0, _this.listScrollH);	
+                        })
+                    }
+                }
+            }
+            // 提示信息弹窗
+            else this.showWarnModel(res.msg, 'warning');
+        })
+        .catch(err => console.log(err))
+    },
+    // 页面滚动
+    scrollPage(){
+        let	scrollTop = $(window).scrollTop();
+
+        // 缓存有滚动高度，未到该高度不触发后面的操作
+        if(this.listScrollH > 0 && scrollTop <= this.listScrollH) return false;
+
+        let windowH = $(window).height(),
+            documentH = $(document).height();
+
+        // 滚动到一定高度的时候开始加载
+        if(scrollTop + windowH > documentH - 40){
+            if(!this.loadMoreNow) {
+                // 正在加载
+                this.loadMoreNow = true;
+                // 累加5条记录
+                this.listNum += 5;
+                // 列表数量存缓存
+                SetCookie('listNum', this.listNum);
+                // 获取更多内容
+                this.getListData(this.listNum, true);
+            }
+        }
+    }
+},
+// 导航离开该组件的对应路由时调用
+beforeRouteLeave (to, from, next) {
+    // 进入资讯详情页
+    if(to.name === 'NewsDetail') next();
+    else{
+        // 清除列表数量和滚动高度缓存
+        DelCookie('listNum');
+        DelCookie('scrollH');
+        next();
+    }
+}
+```
