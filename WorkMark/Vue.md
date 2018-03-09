@@ -206,6 +206,10 @@ method:{
         }
     }
 },
+destroyed(){
+    // 移除滚动事件
+    window.removeEventListener("scroll",this.scrollPage);
+},
 // 导航离开该组件的对应路由时调用
 beforeRouteLeave (to, from, next) {
     // 进入资讯详情页
