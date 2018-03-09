@@ -116,6 +116,10 @@ router.beforeEach((to, from, next) => {
     <!-- 这里是某个列表内容 -->
     </li>
 </ul>
+<!-- 加载更多Loading -->
+<div v-if="showLoading" class="load_more">
+    <Loading></Loading>
+</div>
 ```
 
 ```JS
@@ -127,6 +131,8 @@ data() {
         showTopBtn: false,
         // 显示新闻数量
         listNum: 10,
+        // 是否显示加载Loading
+        showLoading: false,
         // 用来监听是否在加载，如果正在加载不再多请求接口
         loadMoreNow: false,
         // 列表滚动高度
@@ -151,6 +157,9 @@ mounted(){
 method:{
     // 获取列表内容， num: 请求数量，more：是否加载更多
     getListData(num, more){
+        // 显示Loading
+        if(more) this.showLoading = true;
+
         // 请求接口
         Api.DeclareList({
             pageNum: 1,
@@ -164,6 +173,9 @@ method:{
                     // 请求数量大于返回的数据总量，再无数据可添加
                     if(this.listNum >= res.data.dataCount) this.loadMoreNow = true;
                     else this.loadMoreNow = false;
+
+                    // 取消Loading
+                    this.showLoading = false;
                 }
                 // 第一次页面加载
                 else{
