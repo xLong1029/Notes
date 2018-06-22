@@ -200,3 +200,23 @@ input[type="search"]::-webkit-search-cancel-button {
     display: none;
 }
 ```
+
+### 十二、微信PC客户端，不支持ES6
+
+微信PC客户端，不支持ES6特性，导致页面内如有使用该特性的部分无法显示出来
+
+测试浏览器是否支持ES6特性语法，直接在浏览器中打开地址： http://ruanyf.github.io/es-checker/index.cn.html
+
+各大转换工具、JavaScript解析引擎对ES6的支持程度情况，可以参查看这个地址：http://kangax.github.io/compat-table/es6/
+
+解决方法，引入browser.min.js，并且将<script>加上 type="text/babel"：
+
+```html
+    <script src="browser.min.js"></script>
+	<script type="text/babel">
+	   let value = '测试';
+	   alert(value); 
+	</script>
+```
+
+browser.min.js 下载地址：https://github.com/yc880770/browser/blob/master/browser.min.js
