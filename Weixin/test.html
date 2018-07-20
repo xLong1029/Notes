@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>wxcommon.js 测试</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover">
+    <script src="/Statics/js/jquery.min.js"></script>
+    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script type="text/javascript" src="wxcommon.js?v=2"></script>
+</head>
+<body>
+    <script type="text/javascript">
+        var userinfo = wxcommon.getWeixinUserinfo();
+        document.writeln('<div>unionid:' + userinfo.unionid + '</div>');
+        document.writeln('<div>openid:' + userinfo.openid + '</div>');
+        document.writeln('<div>nickname:' + userinfo.nickname + '</div>');
+        document.writeln('<div>sex:' + userinfo.sex + '</div>');
+        document.writeln('<div>headimgurl:' + userinfo.headimgurl + '</div>');
+
+        // 设置 JsSdkApiList ，默认 'onMenuShareTimeline', 'onMenuShareAppMessage'
+        wxcommon.jsSdkApiList = ['onMenuShareTimeline', 'onMenuShareAppMessage'];
+        wxcommon.jsSdkSignatureReady(function () {
+
+            // 所有的 jssdk 操作放在这里
+
+            var link = 'https://weixin.zhujia100.com/test.html';
+            var imgUrl = 'https://weixin.zhujia100.com/statics/images/share.jpg';
+            var title = 'wxcommon.js 测试分享';
+            var desc = 'wxcommon.js 提供常用微信操作，底层自动处理获取微信认证、JSSDK签名等操作';
+
+            var sharemsg = {
+                title: title,
+                link: link,
+                imgUrl: imgUrl,
+                success: function () {
+                },
+                cancel: function () {
+                }
+            };
+
+            // 转发到朋友圈
+            wx.onMenuShareTimeline(sharemsg);
+
+            sharemsg.desc = desc;
+            sharemsg.type = 'link';
+            sharemsg.dataUrl = '';
+
+            // 分享给朋友
+            wx.onMenuShareAppMessage(sharemsg);
+        });
+    </script>
+    <button onclick="xtyCookie.remove('weixin_oauthuserinfo');xtyCookie.remove('weixin_JsSdkUiPackage');alert('删除成功！')">删除Cookie</button>
+</body>
+</html>
