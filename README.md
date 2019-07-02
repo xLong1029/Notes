@@ -1,2 +1,3 @@
 # Notes
-Record some learning materials and collection materials, etc.
+1. 工作和学习遇到的问题和解决方案
+2. 工作中用到的示例
