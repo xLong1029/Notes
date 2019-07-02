@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>HTML--使用Javascript实现简单分页显示例子</title>
+</head>
+<body>
+    <table id="tab">
+    </table>
+    <a href='javascript:first();'>第一页</a>
+    <a href='javascript:pre();'>上一页</a>
+    <a href='javascript:next();'>下一页</a>
+    <a href='javascript:last();'>最后一页</a>
+    <span>(总页数: </span>
+    <span id="total_num"></span>
+    <span> ,当前页数: </span>
+    <span id="current_index"></span>
+    <span>)</span>
+</body>
+<script type="text/javascript">
+var json = [ "测试数据-0", "测试数据-1", "测试数据-2",
+             "测试数据-3", "测试数据-4", "测试数据-5", "测试数据-6",
+             "测试数据-7", "测试数据-8", "测试数据-9", "测试数据-10",
+             "测试数据-11", "测试数据-12", "测试数据-13", "测试数据-14",
+             "测试数据-15", "测试数据-16", "测试数据-17", "测试数据-18",
+             "测试数据-19", "测试数据-20", "测试数据-21", "测试数据-22",
+             "测试数据-23", "测试数据-24", "测试数据-25", "测试数据-26",
+             "测试数据-27", "测试数据-28", "测试数据-29", "测试数据-30",
+             "测试数据-31", "测试数据-32", "测试数据-33", "测试数据-34",
+             "测试数据-35", "测试数据-36", "测试数据-37", "测试数据-38",
+             "测试数据-39", "测试数据-40", "测试数据-41", "测试数据-42",
+             "测试数据-43", "测试数据-44", "测试数据-45", "测试数据-46",
+             "测试数据-47", "测试数据-48", "测试数据-49", "测试数据-50",
+             "测试数据-51", "测试数据-52", "测试数据-53", "测试数据-54",
+             "测试数据-55", "测试数据-56", "测试数据-57", "测试数据-58",
+             "测试数据-59", "测试数据-60", "测试数据-61", "测试数据-62",
+             "测试数据-63", "测试数据-64", "测试数据-65", "测试数据-66",
+             "测试数据-67", "测试数据-68", "测试数据-69", "测试数据-70",
+             "测试数据-71", "测试数据-72", "测试数据-73", "测试数据-74",
+             "测试数据-75", "测试数据-76", "测试数据-77", "测试数据-78",
+             "测试数据-79", "测试数据-80", "测试数据-81", "测试数据-82",
+             "测试数据-83", "测试数据-84", "测试数据-85", "测试数据-86",
+             "测试数据-87", "测试数据-88", "测试数据-89", "测试数据-90",
+             "测试数据-91", "测试数据-92", "测试数据-93", "测试数据-94",
+             "测试数据-95", "测试数据-96", "测试数据-97", "测试数据-98",
+             "测试数据-99" ];
+
+var tab = document.getElementById("tab");
+
+var currentPage = 1;
+
+var num = 22;
+
+var totalData = json.length;
+
+var totalPage = Math.ceil(totalData / num); // 计算需要的页数，逢小数进1
+
+// 显示下一页
+function next() {
+    if (show_last_page_alert())
+        return;
+    currentPage++;
+    show_current();
+}
+
+//显示前一页
+function pre() {
+    if (show_first_page_alert())
+        return;
+    currentPage--;
+    show_current();
+}
+
+//显示第一页
+function first() {
+    if (show_first_page_alert())
+        return;
+    currentPage = 1;
+    show_current();
+}
+
+//显示最后一页
+function last() {
+    if (show_last_page_alert())
+        return;
+    currentPage = totalPage;
+    show_current();
+}
+
+//计算并显示内容
+function show() {
+    var start = (currentPage - 1) * num;
+    var end = currentPage * num;
+    for ( var i = start; i < end; i++) {
+        if (i >= totalData)
+            return;
+        createRow(json[i]);
+    }
+}
+
+//创建要显示的html元素
+function createRow(s) {
+    var tr = document.createElement("tr");
+    var td = document.createElement("td");
+    tr.appendChild(td);
+    td.innerHTML = s;
+    tab.appendChild(tr);
+}
+
+//重置显示的内容
+function reset() {
+    while (tab.hasChildNodes()) {
+        tab.removeChild(tab.lastChild);
+    }
+}
+
+//判断是否已经是第一页
+function show_first_page_alert() {
+    if (currentPage == 1) {
+        alert("已经是第一页啦.");
+        return true;
+    }
+    return false;
+}
+
+//判断是否已经是最后一页
+function show_last_page_alert() {
+    if (currentPage == totalPage) {
+        alert("已经是最后一页啦.");
+        return true;
+    }
+    return false;
+}
+
+//在页面上显示总共有几页
+function show_total_page_num() {
+    document.getElementById("total_num").innerHTML = totalPage;
+}
+
+//显示当前页数
+function show_current_page_num() {
+    document.getElementById("current_index").innerHTML = currentPage;
+}
+
+//显示
+function show_current() {
+    reset();
+    show();
+    show_current_page_num();
+}
+
+//初始化
+show_current();
+show_total_page_num();
+</script>
+</html>
