@@ -4,8 +4,6 @@
 ```
 │  README.md
 │
-├─.vscode // vscode配置，用于配置less
-│
 ├─Example // 工作中用到的示例
 │
 ├─React // React相关学习笔记
