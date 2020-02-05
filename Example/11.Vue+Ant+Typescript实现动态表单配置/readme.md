@@ -1,6 +1,6 @@
 # Vue + Ant Design + Typescript实现动态表单配置
 
-展示效果如下：
+展示效果如下(多选有误，写成select组件了)：
 
 * 模块的增删改功能：
 ![Image text](images/1.gif)
