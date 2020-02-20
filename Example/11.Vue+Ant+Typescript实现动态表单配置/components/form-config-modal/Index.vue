@@ -3,34 +3,19 @@
     <!-- 表单弹窗 -->
     <a-modal
       v-model="showModal"
-      :title="title"
       :maskClosable="false"
+      :centered="true"
       :body-style="{ padding: '15px 0' }"
       width="800px"
       class="form-modal-container"
       @ok="handleOk"
       @cancel="close(false)"
     >
-      <div>
+      <div slot="title" class="form-modal__title">{{ title }}</div>
+      <div class="form-modal__content">
         <!-- 示例 -->
-        <div
-          class="example-container"
-          :class="{ 'label-top10': controlType === 2  || controlType === 9 || controlType === 10 }"
-        >
-          <div class="example__label">
-            <span class="example__required" v-if="form.getFieldValue('isRequired')">*</span>
-            {{ form.getFieldValue('name') ? form.getFieldValue('name') : '示例'}}
-            <a-tooltip
-              v-if="showRemark()"
-              :title="form.getFieldValue('remark')"
-              class="example__question"
-            >
-              <a-icon type="question-circle-o" />
-            </a-tooltip>:
-          </div>
-          <div class="example__control">
-            <form-control :props="formControl" @img-preview="handleImgPreview" />
-          </div>
+        <div class="example-container">
+          <form-control :props="formControl" @img-preview="handleImgPreview" />
         </div>
         <!-- 表单 -->
         <a-form :form="form" class="form-container">
@@ -39,8 +24,7 @@
               <a-form-item label="控件标题">
                 <a-input
                   placeholder="请输入控件标题"
-                  v-decorator="['name', {
-                    
+                  v-decorator="['name', {                    
                     rules:[{ required:true, validator: validateName }]
                   }]"
                 />
@@ -56,147 +40,40 @@
                 />
               </a-form-item>
             </a-col>
-          </a-row>
-          <!-- 仅数量类型有-start -->
-          <a-row v-if="controlType === 3" :gutter="12">
-            <a-col :span="12">
-              <a-form-item label="是否统计字段">
-                <a-radio-group
-                  name="isStatistics"
-                  v-decorator="['isStatistics', {rules:[{required:true, message:'请选择是否统计字段'}]}]"
-                >
-                  <a-radio :value="true">是</a-radio>
-                  <a-radio :value="false">否</a-radio>
-                </a-radio-group>
-              </a-form-item>
-            </a-col>
-            <a-col :span="12">
-              <a-form-item label="数值单位">
-                <a-input
-                  placeholder="请输入数值单位"
-                  v-decorator="['unit', { rules: [{ required: true, message: '请输入数值单位' }] }]"
-                />
-              </a-form-item>
-            </a-col>
-          </a-row>
-          <!-- 仅数量类型有-end -->
-          <!-- 仅单选、多选和附件下载有-start -->
-          <a-row v-if="controlType === 4 || controlType === 5 || controlType === 10" :gutter="12">
-            <a-col :span="24">
-              <a-form-item :label="controlType === 10 ? '附件' : '配置选项'">
-                <!-- 仅为了绑定valueArray值，方便后续读取操作-start -->
-                <a-radio-group
-                  name="valueArray"
-                  style="display:none;"
-                  v-decorator="['valueArray', { rules: [{ required:true, validator: (rule, value, callback) => callback() }] }]"
-                >
-                  <a-radio
-                    v-for="(item, index) in form.getFieldValue('valueArray')"
-                    :key="index"
-                    :value="item.value ? item.value : item.localUrl"
-                  >{{ item.label? item.label : item.fileName }}</a-radio>
-                </a-radio-group>
-                <!-- 仅为了绑定valueArray值，方便后续读取操作-end -->
-
-                <!-- 选项配置表格-start -->
-                <template v-if="controlType === 4 || controlType === 5">
-                  <table border class="table-container">
-                    <tbody>
-                      <tr>
-                        <th>
-                          <span class="requried">选项文本(label)</span>
-                        </th>
-                        <th>
-                          <span class="requried">选项值(value)</span>
-                        </th>
-                        <th>操作</th>
-                      </tr>
-                      <tr
-                        v-for="(item, index) in form.getFieldValue('valueArray')"
-                        :key="'tr' + index"
-                      >
-                        <td>
-                          <a-form-item label :key="'option-label' + index">
-                            <a-input
-                              placeholder="请输入选项文本"
-                              v-decorator="[`labels[${index}]`, { rules: [{ required: true, message: '请输入选项文本' }] }]"
-                              @blur="handleValueArrayBlur($event, index, 'label')"
-                            />
-                          </a-form-item>
-                        </td>
-                        <td>
-                          <a-form-item label :key="'option-value' + index">
-                            <a-input
-                              placeholder="请输入选项值"
-                              v-decorator="[`values[${index}]`, { rules: [{ required: true, message: '请输入选项值' }] }]"
-                              @blur="handleValueArrayBlur($event, index, 'value')"
-                            />
-                          </a-form-item>
-                        </td>
-                        <td class="action">
-                          <a-popconfirm
-                            v-if="form.getFieldValue('valueArray').length > 2"
-                            title="是否确认删除该选项？"
-                            @confirm="delOption(index)"
-                            okText="确认"
-                            cancelText="取消"
-                          >
-                            <a-button size="small" icon="edit" type="link">删除</a-button>
-                          </a-popconfirm>
-                          <span v-else>-</span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div class="add-btn" @click="addOption()">
-                    <a-icon type="plus-circle" />添加选项
-                  </div>
-                </template>
-                <!-- 选项配置表格-end -->
-                <!-- 附件列表-start -->
-                <template v-if="controlType === 10">
-                  <table border class="table-container">
-                    <tbody>
-                      <tr>
-                        <th>文件名称</th>
-                        <th>操作</th>
-                      </tr>
-                      <tr
-                        v-for="(item, index) in form.getFieldValue('valueArray')"
-                        :key="'tr' + index"
-                      >
-                        <td>{{ item.fileName }}</td>
-                        <td class="action">
-                          <a-popconfirm
-                            v-if="form.getFieldValue('valueArray').length > 1"
-                            title="是否确认删除该附件？"
-                            @confirm="delFile(index)"
-                            okText="确认"
-                            cancelText="取消"
-                          >
-                            <a-button size="small" icon="edit" type="link">删除</a-button>
-                          </a-popconfirm>
-                          <span v-else>-</span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <a-upload
-                    class="add-btn"
-                    name="file"
-                    :action="actionUrl"
-                    :showUploadList="false"
-                    @change="handleFileChange"
+            <!-- 仅数量类型有-start -->
+            <template v-if="controlType === 3" :gutter="12">
+              <a-col :span="12">
+                <a-form-item label="是否实施统计">
+                  <a-radio-group
+                    name="isImplementStatistics"
+                    v-decorator="['isImplementStatistics', {rules:[{required:true, message:'请选择是否实施统计'}]}]"
                   >
-                    <a-icon type="upload" style="margin-right:5px" />上传附件
-                  </a-upload>
-                </template>
-                <!-- 附件列表-end -->
-              </a-form-item>
-            </a-col>
-          </a-row>
-          <!-- 仅单选、多选和附件下载有-end -->
-          <a-row :gutter="12">
+                    <a-radio :value="true">是</a-radio>
+                    <a-radio :value="false">否</a-radio>
+                  </a-radio-group>
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item label="是否数量统计">
+                  <a-radio-group
+                    name="isQuantityStatistics"
+                    v-decorator="['isQuantityStatistics', {rules:[{required:true, message:'请选择是否数量统计'}]}]"
+                  >
+                    <a-radio :value="true">是</a-radio>
+                    <a-radio :value="false">否</a-radio>
+                  </a-radio-group>
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item label="数值单位">
+                  <a-input
+                    placeholder="请输入数值单位"
+                    v-decorator="['unit', { rules: [{ required: true, message: '请输入数值单位' }] }]"
+                  />
+                </a-form-item>
+              </a-col>
+            </template>
+            <!-- 仅数量类型有-end -->
             <a-col :span="12">
               <a-form-item label="是否必填" v-if="controlType !== 10">
                 <a-radio-group
@@ -232,7 +109,10 @@
                 </a-radio-group>
               </a-form-item>
             </a-col>
-            <a-col :span="12" v-if="form.getFieldValue('isScore') &&  controlType !== 10">
+            <a-col
+              :span="12"
+              v-if="form.getFieldValue('isScore') && controlType !== 10 && controlType !== 4 && controlType !== 5"
+            >
               <a-form-item label="分值">
                 <a-input-number
                   placeholder="请输入分值"
@@ -241,41 +121,146 @@
                 />
               </a-form-item>
             </a-col>
-            <!-- 非上传或下载操作才有-start -->
-            <template v-if="controlType < 8">
-              <a-col :span="12" v-if="controlType !== 4">
+            <!-- 非单选、多选、上传或下载操作才有-start -->
+            <template v-if="controlType < 8 && controlType !== 4 && controlType !== 5">
+              <a-col :span="12">
                 <a-form-item label="提示信息">
                   <a-input placeholder="请输入提示信息" v-decorator="['placeholder']"></a-input>
                 </a-form-item>
               </a-col>
-              <a-col :span="12">
-                <a-form-item label="默认值">
-                  <!-- 数字 -->
-                  <template v-if="controlType === 3">
-                    <a-input-number
-                      placeholder="请输入默认值"
-                      v-decorator="['defaultValue']"
-                      style="width: 100%"
-                    />
-                  </template>
-                  <!-- 日期、时间日期 -->
-                  <template v-else-if="controlType === 6 || controlType === 7">
-                    <a-date-picker
-                      :showTime="controlType === 7"
-                      placeholder="请输入默认值"
-                      v-decorator="['defaultValue']"
-                      style="width: 100%"
-                    />
-                  </template>
-                  <!-- 其他 -->
-                  <template v-else>
-                    <a-input placeholder="请输入默认值" v-decorator="['defaultValue']" />
-                  </template>
-                </a-form-item>
-              </a-col>
             </template>
-            <!-- 非上传或下载操作才有-end -->
+            <!-- 非单选、多选、上传或下载操作才有-end -->
           </a-row>
+          <!-- 仅单选、多选和附件下载有-start -->
+          <a-row v-if="controlType === 4 || controlType === 5 || controlType === 10" :gutter="12">
+            <a-col :span="24">
+              <a-form-item :label="controlType === 10 ? '附件' : '配置选项'">
+                <!-- 仅为了绑定valueArray值，方便后续读取操作-start -->
+                <a-radio-group
+                  name="valueArray"
+                  style="display:none;"
+                  v-decorator="['valueArray', { rules: [{ required:true, validator: (rule, value, callback) => callback() }] }]"
+                >
+                  <a-radio
+                    v-for="(item, index) in form.getFieldValue('valueArray')"
+                    :key="index"
+                    :value="item.value ? item.value : item.localUrl"
+                  >{{ item.label? item.label : item.fileName }}</a-radio>
+                </a-radio-group>
+                <!-- 仅为了绑定valueArray值，方便后续读取操作-end -->
+
+                <!-- 选项配置表格-start -->
+                <template v-if="controlType === 4 || controlType === 5">
+                  <table border class="table-container">
+                    <tbody>
+                      <tr>
+                        <th>
+                          <span class="requried">选项文本(label)</span>
+                        </th>
+                        <!-- <th>
+                          <span class="requried">选项值(value)</span>
+                        </th>-->
+                        <th v-if="form.getFieldValue('isScore')">
+                          <span class="requried">分值(score)</span>
+                        </th>
+                        <th>操作</th>
+                      </tr>
+                      <tr
+                        v-for="(item, index) in form.getFieldValue('valueArray')"
+                        :key="'tr' + index"
+                      >
+                        <td>
+                          <a-form-item label :key="'option-label' + index">
+                            <a-input
+                              placeholder="请输入选项文本"
+                              v-decorator="[`labels[${index}]`, { rules: [{ required: true, message: '请输入选项文本' }] }]"
+                              @blur="handleValueArrayBlur($event, index, 'label')"
+                            />
+                          </a-form-item>
+                        </td>
+                        <!-- <td>
+                          <a-form-item label :key="'option-value' + index">
+                            <a-input
+                              placeholder="请输入选项值"
+                              v-decorator="[`values[${index}]`, { rules: [{ required: true, message: '请输入选项值' }] }]"
+                              @blur="handleValueArrayBlur($event, index, 'value')"
+                            />
+                          </a-form-item>
+                        </td>-->
+                        <td v-if="form.getFieldValue('isScore')">
+                          <a-form-item label :key="'option-score' + index">
+                            <a-input-number
+                              placeholder="请输入该项分值"
+                              v-decorator="[`scores[${index}]`, { rules: [{ required: true, message: '请输入该项分值' }] }]"
+                              @blur="handleValueArrayBlur($event, index, 'score')"
+                              style="width: 100%"
+                            />
+                          </a-form-item>
+                        </td>
+                        <td class="action">
+                          <a-popconfirm
+                            v-if="form.getFieldValue('valueArray').length > 2"
+                            title="是否确认删除该选项？"
+                            @confirm="delOption(index)"
+                            okText="确认"
+                            cancelText="取消"
+                          >
+                            <a-button size="small" icon="delete" type="link">删除</a-button>
+                          </a-popconfirm>
+                          <span v-else>-</span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="add-btn" @click="addOption()">
+                    <a-icon type="plus-circle" />添加选项
+                  </div>
+                </template>
+                <!-- 选项配置表格-end -->
+                <!-- 附件列表-start -->
+                <template v-if="controlType === 10">
+                  <table border class="table-container">
+                    <tbody>
+                      <tr>
+                        <th>文件名称</th>
+                        <th>操作</th>
+                      </tr>
+                      <tr
+                        v-for="(item, index) in form.getFieldValue('valueArray')"
+                        :key="'tr' + index"
+                      >
+                        <td>{{ item.fileName }}</td>
+                        <td class="action">
+                          <a-popconfirm
+                            v-if="form.getFieldValue('valueArray').length > 1"
+                            title="是否确认删除该附件？"
+                            @confirm="delFile(index)"
+                            okText="确认"
+                            cancelText="取消"
+                          >
+                            <a-button size="small" icon="delete" type="link">删除</a-button>
+                          </a-popconfirm>
+                          <span v-else>-</span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a-upload
+                    class="add-btn"
+                    name="file"
+                    :action="actionUrl"
+                    :headers.sync="headers"
+                    :showUploadList="false"
+                    @change="handleFileChange"
+                  >
+                    <a-icon type="upload" style="margin-right:5px" />上传附件
+                  </a-upload>
+                </template>
+                <!-- 附件列表-end -->
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <!-- 仅单选、多选和附件下载有-end -->
           <a-row :gutter="12">
             <a-col :span="24">
               <a-form-item label="备注说明">
@@ -301,7 +286,7 @@ import { Component, Prop, Vue, Watch, Emit } from "vue-property-decorator";
 import FormControl from "@/components/form-config-modal/FormControl.vue";
 
 import config from "@/config";
-import moment from 'moment';
+import moment from "moment";
 const UPLOAD_URL = config.get("UPLOAD_URL");
 
 @Component({ components: { FormControl } })
@@ -317,38 +302,46 @@ export default class FormConfig extends Vue {
   @Prop({ type: [Array], default: () => [] }) formControlType!: any;
 
   // 弹窗可见性
-  showModal: Boolean = false;
+  private showModal: Boolean = false;
 
-  // 表单布局
-  formItemLayout: any = {
-    labelCol: { span: 7 },
-    wrapperCol: { span: 17 }
-  };
   // 表单
-  form: any = {};
+  private form: any = {};
 
   // 控件索引
-  formIndex: number = -1;
+  private formIndex: number = -1;
 
   // 控件类型
-  controlType: number = 1;
+  private controlType: number = 1;
 
   // 表单控件
-  formControl: any = {};
+  private formControl: any = {};
 
   // 图片预览
-  imgPreview: any = {
+  private imgPreview: any = {
     visible: false,
     img: null
   };
 
   // 上传地址
-  actionUrl: any = UPLOAD_URL + "api/UploadFile/Upload";
+  private actionUrl: any = UPLOAD_URL + "api/UploadFile/Upload";
+
+  // 定义选项值ID，由于默认会配置1、2两个值，所以从3递增
+  private valId: any = 3;
+
+  private headers: any;
+
+  beforeCreate() {
+    const token = this.$ls.get("token");
+    const prefix = this.$ls.get("token_type");
+    this.headers = {
+      authorization: `${prefix} ${token}`
+    };
+  }
 
   created() {
     const _this = this;
     this.form = this.$form.createForm(this, {
-      onValuesChange: (props, values) => {
+      onValuesChange: (props, scores) => {
         _this.$nextTick(() => {
           // 获取表单所有变动值
           _this.formControl = _this.form.getFieldsValue();
@@ -380,7 +373,6 @@ export default class FormConfig extends Vue {
           isScore: false,
           score: null,
           placeholder: null,
-          defaultValue: null,
           valueArray: [],
           remark: null
         };
@@ -403,15 +395,15 @@ export default class FormConfig extends Vue {
   validateName(rule: any, value: any, callback: any) {
     if (!value) callback("请输入控件标题");
 
-    if (!this.parentNode || !this.parentNode.formControls.length) {
-      callback();
-    }
+    // if (!this.parentNode || !this.parentNode.formControls.length) {
+    //   callback();
+    // }
 
-    this.parentNode.formControls.forEach((e, index) => {
-      if (e.name === value && this.formIndex !== index) {
-        callback(`名称“${value}”已存在`);
-      }
-    });
+    // this.parentNode.formControls.forEach((e, index) => {
+    //   if (e.name === value && this.formIndex !== index) {
+    //     callback(`名称“${value}”已存在`);
+    //   }
+    // });
 
     callback();
   }
@@ -434,10 +426,10 @@ export default class FormConfig extends Vue {
       isScore,
       score,
       placeholder,
-      defaultValue,
       valueArray,
       remark,
-      isStatistics,
+      isImplementStatistics,
+      isQuantityStatistics,
       unit,
       index
     } = data;
@@ -445,59 +437,52 @@ export default class FormConfig extends Vue {
     // 通有属性
     this.form.setFieldsValue({ name, type, remark });
 
-    // 非单选、上传、下载控件
-    if (type !== 4 || type !== 8 || type !== 9 || type !== 10) {
+    // 仅单行、多行、数字和日期控件
+    if (type < 4 || type === 6 || type === 7) {
       this.form.setFieldsValue({ placeholder });
     }
-
-    // 非日期、上传、下载控件
-    if (type <= 5) {
-      this.form.setFieldsValue({ defaultValue });
-    }
-
     // 单行文本、多行文本
-    if (type === 1 || type === 2) {
+    if (type <= 2) {
       this.form.setFieldsValue({ isReadOnly });
     }
     // 数字
     if (type === 3) {
       this.form.setFieldsValue({
-        isStatistics,
+        isImplementStatistics,
+        isQuantityStatistics,
         unit
       });
     }
-    // 单选、多选
-    if ((type === 4 || type === 5) && valueArray.length) {
-      let labels: any = [];
-      let values: any = [];
-
-      valueArray.forEach(e => {
-        labels.push(e.label);
-        values.push(e.value);
-      });
-
-      this.$nextTick(() => {
-        this.setOptions(valueArray, labels, values);
-      });
-    }
-
-    // 日期
-    if (type === 6 || type === 7) {
-      this.form.setFieldsValue({ defaultValue: defaultValue ? moment(defaultValue) : null });
+    // 下载
+    if (type === 10) {
+      this.form.setFieldsValue({ valueArray });
     }
 
     // 需要最后判断才能绑定isScore的值
-    if (type === 10) {
-      this.form.setFieldsValue({ valueArray });
-    } else {
+    else {
       this.form.setFieldsValue({ isRequired });
       this.$nextTick(() => {
+        // 绑定完isScore后才能绑定score的值
         this.form.setFieldsValue({ isScore });
-        if (data.isScore) {
-          this.$nextTick(() => {
-            this.form.setFieldsValue({ score });
-          });
-        }
+
+        this.$nextTick(() => {
+          // 单选、多选分值配置在选项中
+          if (type === 4 || type === 5) {
+            let labels: any = [];
+            let scores: any = [];
+
+            valueArray.forEach(e => {
+              labels.push(e.label);
+              scores.push(e.score);
+            });
+
+            this.setOptions(valueArray, labels, data.isScore ? scores : null);
+          } else {
+            if (data.isScore) {
+              this.form.setFieldsValue({ score });
+            }
+          }
+        });
       });
     }
   }
@@ -515,9 +500,31 @@ export default class FormConfig extends Vue {
 
     this.form.validateFields((err: any, values: any) => {
       if (!err) {
+        let data = { ...values };
+
+        if (this.controlType === 4 || this.controlType === 5) {
+          data.valueArray = values.valueArray.map((e, i) => {
+            return values.isScore
+              ? {
+                  label: values.labels[i],
+                  value: `val${i + 1}`,
+                  score: values.scores[i]
+                }
+              : {
+                  label: values.labels[i],
+                  value: `val${i + 1}`
+                };
+          });
+        } else {
+          // 不计分清空分数
+          if (!values.isScore) {
+            data.score = 0;
+          }
+        }
+
         this.formIndex > -1
-          ? this.comfir(values, this.formIndex)
-          : this.comfir(values, -1);
+          ? this.comfir(data, this.formIndex)
+          : this.comfir(data, -1);
       } else {
         this.$message.error("请检查输入项");
       }
@@ -527,7 +534,6 @@ export default class FormConfig extends Vue {
   // 表单控件类型改变
   handleFormControlTypeChange(type) {
     this.controlType = type;
-    // this.form.resetFields();
 
     this.$nextTick(() => {
       // 非下载控件
@@ -537,6 +543,32 @@ export default class FormConfig extends Vue {
         });
         this.$nextTick(() => {
           this.form.setFieldsValue({ isScore: false });
+
+          // 单选、多选
+          if (type === 4 || type === 5) {
+            const valueArray = [
+              {
+                label: "选项一",
+                value: "val1",
+                score: ""
+              },
+              {
+                label: "选项二",
+                value: "val2",
+                score: ""
+              }
+            ];
+            const labels = ["选项一", "选项二"];
+
+            const isScore = this.form.getFieldValue("isScore");
+            const scores = isScore ? ["", ""] : null;
+
+            this.$nextTick(() => {
+              this.setOptions(valueArray, labels, scores);
+            });
+
+            return;
+          }
         });
       }
 
@@ -550,26 +582,9 @@ export default class FormConfig extends Vue {
       // 数字
       if (type === 3) {
         this.form.setFieldsValue({
-          isStatistics: false
+          isImplementStatistics: false,
+          isQuantityStatistics: false
         });
-        return;
-      }
-      // 单选、多选
-      if (type === 4 || type === 5) {
-        const valueArray = [
-          {
-            label: "选项一",
-            value: "test1"
-          },
-          {
-            label: "选项二",
-            value: "test2"
-          }
-        ];
-        const labels = ["选项一", "选项二"];
-        const values = ["test1", "test2"];
-
-        this.setOptions(valueArray, labels, values);
         return;
       }
     });
@@ -591,68 +606,96 @@ export default class FormConfig extends Vue {
     });
   }
 
+  // 是否统计字段
+  handleIsStatisticsChange(e) {
+    const value = e.target.value;
+    if (value) {
+      this.$nextTick(() => {
+        this.form.setFieldsValue({
+          isImplementStatistics: false,
+          isQuantityStatistics: false
+        });
+      });
+    }
+  }
+
   // 删除选项
   delOption(index) {
-    const { valueArray, labels, values } = this.getOptions();
+    const { valueArray, labels, scores } = this.getOptions();
+    const isScore = this.form.getFieldValue("isScore");
 
     valueArray.splice(index, 1);
     labels.splice(index, 1);
-    values.splice(index, 1);
 
-    this.setOptions(valueArray, labels, values);
+    if(isScore){
+      scores.splice(index, 1);
+      this.setOptions(valueArray, labels, scores);
+    }
+    else{
+      this.setOptions(valueArray, labels, null);
+    } 
   }
 
   // 添加选项
   addOption() {
-    const { valueArray, labels, values } = this.getOptions();
+    const { valueArray, labels, scores } = this.getOptions();
 
     const nextValueArray = valueArray.concat({
-      lable: "",
-      value: ""
+      label: "",
+      value: `val${this.valId++}`,
+      score: ""
     });
     const nextLabels = labels.concat("");
-    const nextValues = values.concat("");
 
-    this.setOptions(nextValueArray, nextLabels, nextValues);
+    const isScore = this.form.getFieldValue("isScore");
+    const nextScores = isScore && scores ? scores.concat("") : null;
+
+    this.setOptions(nextValueArray, nextLabels, nextScores);
   }
 
   // 获取选项配置
   getOptions() {
     const labels = this.form.getFieldValue("labels");
-    const values = this.form.getFieldValue("values");
+    const scores = this.form.getFieldValue("scores");
     const valueArray = this.form.getFieldValue("valueArray");
 
-    return { valueArray, labels, values };
+    return { valueArray, labels, scores };
   }
 
   // 配置选项
-  setOptions(valueArray, labels, values) {
+  setOptions(valueArray, labels, scores) {
+    // console.log(valueArray, labels, scores);
+
     this.form.setFieldsValue({ valueArray });
 
+    const params = scores ? { labels, scores } : { labels };
     this.$nextTick(() => {
-      this.form.setFieldsValue({ labels, values });
+      this.form.setFieldsValue(params);
     });
   }
 
   // 选项值失去焦点
   handleValueArrayBlur(e, index, type) {
     const value = e.target.value;
-    const { valueArray, labels, values } = this.getOptions();
+    const { valueArray, labels, scores } = this.getOptions();
 
     if (!value || value === "") {
-      type === "label"
-        ? this.form.setFields({
-            [`labels[${index}]`]: {
-              value,
-              errors: [new Error("请输入选项文本")]
-            }
-          })
-        : this.form.setFields({
-            [`values[${index}]`]: {
-              value,
-              errors: [new Error("请输入选项值")]
-            }
-          });
+      if (type === "label") {
+        this.form.setFields({
+          [`labels[${index}]`]: {
+            value,
+            errors: [new Error("请输入选项文本")]
+          }
+        });
+      }
+      // else if (type === "value") {
+      //   this.form.setFields({
+      //     [`values[${index}]`]: {
+      //       value,
+      //       errors: [new Error("请输入选项值")]
+      //     }
+      //   });
+      // }
 
       return false;
     }
@@ -668,15 +711,16 @@ export default class FormConfig extends Vue {
             }
           });
           return false;
-        } else if (e.value == value && type === "value") {
-          this.form.setFields({
-            [`values[${index}]`]: {
-              value,
-              errors: [new Error("选项值不能重复")]
-            }
-          });
-          return false;
         }
+        // else if (e.score == value && type === "value") {
+        //   this.form.setFields({
+        //     [`values[${index}]`]: {
+        //       value,
+        //       errors: [new Error("选项值不能重复")]
+        //     }
+        //   });
+        //   return false;
+        // }
       }
     });
 
@@ -684,11 +728,19 @@ export default class FormConfig extends Vue {
     if (this.controlType === 4 || this.controlType === 5) {
       let nextValueArray: any = [];
 
+      const isScore = this.form.getFieldValue("isScore");
+
       labels.forEach((e, i) => {
-        nextValueArray.push({
-          label: labels[i],
-          value: values[i]
-        });
+        isScore
+          ? nextValueArray.push({
+              label: labels[i],
+              value: `val${i + 1}`,
+              score: scores[i]
+            })
+          : nextValueArray.push({
+              label: labels[i],
+              value: `val${i + 1}`
+            });
       });
 
       this.form.setFieldsValue({ valueArray: nextValueArray });
@@ -726,7 +778,8 @@ export default class FormConfig extends Vue {
 
     if (info.file.response) {
       let data = { ...info.file.response.data };
-      data.size = (info.file.size / 1024).toFixed(2);
+      data.size = info.file.size;
+      // data.size = (info.file.size / 1024).toFixed(2);
 
       if (valueArray && valueArray.length) {
         valueArray.push(data);
@@ -740,61 +793,28 @@ export default class FormConfig extends Vue {
 }
 </script>
 <style lang="less">
-.form-modal-container {
-  /deep/ .ant-form-item {
-    display: flex;
+.form-modal {
+  &-container {
+    /deep/ .ant-form-item {
+      display: flex;
+    }
+
+    /deep/ .ant-form-item-label {
+      min-width: 120px;
+    }
+
+    /deep/ .ant-form-item-control-wrapper {
+      width: 100%;
+    }
   }
 
-  /deep/ .ant-form-item-label {
-    min-width: 110px;
-  }
-
-  /deep/ .ant-form-item-control-wrapper {
-    width: 100%;
+  &__title {
+    width: 90%;
   }
 }
 </style>
 <style lang="less" scoped>
-.example {
-  &-container {
-    background: #f2f2f2;
-    // min-height: 90px;
-    padding: 15px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    &.label-top10 {
-      margin-top: 10px;
-      align-items: baseline;
-    }
-  }
-
-  &__label {
-    text-align: right;
-    margin-right: 10px;
-    // margin-top: 5px;
-  }
-
-  &__required {
-    color: #f5222d;
-    font-family: SimSun, sans-serif;
-  }
-
-  &__question {
-    margin-right: 5px;
-  }
-
-  &__control {
-    display: flex;
-    align-items: center;
-
-    span {
-      font-size: 12px;
-      margin-left: 5px;
-    }
-  }
-}
+@import "./../../assets/theme/styles/rubbish-score/scroll-bar.less";
 
 .form-container {
   padding: 0 20px 0 15px;
@@ -834,8 +854,18 @@ export default class FormConfig extends Vue {
   }
 }
 
+.example-container {
+  background: #f2f2f2;
+  padding: 20px;
+
+  /deep/ .control {
+    width: 65%;
+  }
+}
+@border: 1px solid #e8e8e8;
+
 .table-container {
-  border: 1px solid #e8e8e8;
+  border: @border;
   width: 100%;
 
   /deep/ th {
@@ -843,9 +873,11 @@ export default class FormConfig extends Vue {
     color: rgba(0, 0, 0, 0.85);
     font-weight: 500;
     background: #fafafa;
+    border: @border;
   }
   /deep/ td {
     padding: 8px 10px 0 10px;
+    border: @border;
   }
 
   .action {
@@ -864,25 +896,5 @@ export default class FormConfig extends Vue {
     line-height: 1;
     content: "*";
   }
-}
-
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-/* 滚动槽 */
-::-webkit-scrollbar-track {
-  border-radius: 10px;
-  box-shadow: inset 0 0 6px #eee;
-  -webkit-box-shadow: inset 0 0 6px #eee;
-}
-
-/* 滚动条滑块 */
-::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 10px;
-  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
 }
 </style>

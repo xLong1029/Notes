@@ -1,89 +1,142 @@
 <template>
   <div>
-    <a-collapse :activeKey="unfoldKeys" :bordered="false" class="module-container">
-      <a-collapse-panel v-for="(item, index) in trees" :key="item.key">
-        <div slot="header" class="module-header">
-          <div class="module-header__name">
-            <span>{{ item.name }}</span>
-            <a-tooltip placement="right" v-if="showRemark(item)">
-              <template slot="title">{{ item.remark }}</template>
-              <a-icon class="module-header__question" type="question-circle" />
-            </a-tooltip>
-          </div>
-          <div class="module-header__operate">
-            <a-button icon="plus-circle" type="link" @click.stop="addChildModule(item)">新增子模块</a-button>
-            <a-divider type="vertical" />
-            <a-button icon="plus-circle" type="link" @click.stop="addFormControl(item)">插入表单控件</a-button>
-            <a-divider type="vertical" />
-            <a-button icon="edit" type="link" @click.stop="editModule(item)">编辑模块</a-button>
-            <a-divider type="vertical" />
-            <a-button
-              style="color:#f5222d"
-              icon="delete"
-              type="link"
-              @click.stop="handleModuleDelete(index, parentNodeKey)"
-            >删除模块</a-button>
-          </div>
-        </div>
-        <div class="module-content">
-          <!-- 模块key： {{ item.key }} -->
-          <!-- 表单 -->
-          <template v-if="item.formControls.length">
-            <div
-              v-for="(form, i) in item.formControls"
-              :key="'form-control' + i"
-              class="form-control"
-              :class="{ 'label-top10': form.type === 2 || form.type === 9 || form.type === 10 }"
-            >
-              <div class="form-control__label">
-                <span class="form-control__required" v-if="form.isRequired">*</span>
-                {{ form.name }}
-                <a-tooltip
-                  v-if="showRemark(form)"
-                  :title="form.remark"
-                  class="form-control__question"
-                >
-                  <a-icon type="question-circle-o" />
-                </a-tooltip>:
-              </div>
-              <div class="form-control__control">
-                <form-control :props="form" @img-preview="handleImgPreview" />
-              </div>
-              <div class="form-control__operate">
-                <a-icon
-                  type="edit"
-                  class="operate-icon"
-                  @click.stop="editFormControl(item, form, i)"
-                />
-                <a-icon
-                  type="delete"
-                  class="operate-icon"
-                  @click.stop="handleFormControlDelete(i, item.key)"
-                />
-              </div>
+    <draggable
+      :list="trees"
+      :disabled="!moduleDragSetting.enabled"
+      class="module-list"
+      handle=".module-drag"
+      ghost-class="ghost"
+      :move="handleModuleMove"
+      @start="moduleDragSetting.dragging = true"
+      @end="moduleDragSetting.dragging = false"
+    >
+      <a-collapse
+        v-for="(item, index) in trees"
+        :key="item.key"
+        :activeKey="item.key"
+        :bordered="false"
+        class="module-container"
+      >
+        <a-collapse-panel :key="item.key">
+          <div slot="header" class="module-header">
+            <div class="module-header__name" :class="{'w-100perent': !operable}">
+              <span>{{ item.name }}</span>
+              <a-tooltip placement="right" v-if="showRemark(item)">
+                <template slot="title">{{ item.remark }}</template>
+                <a-icon class="module-header__question" type="question-circle" />
+              </a-tooltip>
             </div>
-          </template>
-          <template v-if="item.children.length">
-            <recursive-module
-              :trees="item.children"
-              :parent-node-key="item.key"
-              @add-child-module="addChildModule"
-              @edit-module="editModule"
-              @del-module="delModule"
-              @add-form-control="addFormControl"
-              @edit-form-control="editFormControl"
-              @del-form-control="delFormControl"
-            />
-          </template>
-          <!-- 两者为空 -->
-          <div v-if="!item.children.length && !item.formControls.length" class="empty-container">
-            <a-empty description="暂无内容，请新增" />
+            <div class="module-header__operate" v-if="operable">
+              <a-button icon="bars" type="link" class="module-drag">移动</a-button>
+              <a-divider type="vertical" />
+              <a-button icon="plus-circle" type="link" @click.stop="addChildModule(item)">子模块</a-button>
+              <a-divider type="vertical" />
+              <a-button icon="plus-circle" type="link" @click.stop="addFormControl(item)">表单控件</a-button>
+              <a-divider type="vertical" />
+              <a-button icon="edit" type="link" @click.stop="editModule(item)">编辑</a-button>
+              <a-divider type="vertical" />
+              <a-button
+                style="color:#f5222d"
+                icon="delete"
+                type="link"
+                @click.stop="handleModuleDelete(index, parentNodeKey)"
+              >删除</a-button>
+            </div>
           </div>
-        </div>
-      </a-collapse-panel>
-    </a-collapse>
+          <div class="module-content">
+            <!-- 表单 -->
+            <template v-if="item.formControls.length">
+              <!-- 只读文本 -->
+              <template v-if="readOnly">
+                <div
+                  v-for="(form, i) in item.formControls"
+                  :key="'form-control' + i"
+                  class="form-control"
+                >
+                  <div class="form-control__content">
+                    <text-content
+                      v-if="readOnly"
+                      :data="form"
+                      :preview-type="previewType"
+                      @img-preview="handleImgPreview"
+                    ></text-content>
+                  </div>
+                </div>
+              </template>
+              <!-- 表单控件 -->
+              <template v-else>
+                <draggable
+                  :list="item.formControls"
+                  :disabled="!formControlDragSetting.enabled"
+                  class="form-control-list"
+                  handle=".form-control-drag"
+                  ghost-class="ghost"
+                  :move="handleFormControlMove"
+                  @start="formControlDragSetting.dragging = true"
+                  @end="formControlDragSetting.dragging = false"
+                >
+                  <div
+                    v-for="(form, i) in item.formControls"
+                    :key="'form-control' + i"
+                    class="form-control"
+                  >
+                    <div class="form-control__content">
+                      <form-control
+                        :props="form"
+                        :usageType="controlUsageType"
+                        @img-preview="handleImgPreview"
+                      />
+                    </div>
+                    <div class="form-control__operate" v-if="operable">
+                      <a-icon type="bars" class="operate-icon form-control-drag" />
+                      <a-icon
+                        type="edit"
+                        class="operate-icon"
+                        @click.stop="editFormControl(item, form, i)"
+                      />
+                      <a-icon
+                        type="delete"
+                        class="operate-icon"
+                        @click.stop="handleFormControlDelete(i, item.key)"
+                      />
+                    </div>
+                  </div>
+                </draggable>
+              </template>
+            </template>
+            <!-- 模块 -->
+            <template v-if="item.children.length">
+              <recursive-module
+                :trees="item.children"
+                :parent-node-key="item.key"
+                :operable="operable"
+                :control-usage-type="controlUsageType"
+                :read-only="readOnly"                
+                :preview-type="previewType"
+                :report-type="reportType"                
+                @add-child-module="addChildModule"
+                @edit-module="editModule"
+                @del-module="delModule"
+                @add-form-control="addFormControl"
+                @edit-form-control="editFormControl"
+                @del-form-control="delFormControl"
+              />
+            </template>
+            <!-- 两者为空 -->
+            <div v-if="!item.children.length && !item.formControls.length" class="empty-container">
+              <a-empty :description="operable ? '暂无内容，请新增' : '暂无内容'" />
+            </div>
+          </div>
+        </a-collapse-panel>
+      </a-collapse>
+    </draggable>
     <!-- 查看图片 -->
-    <a-modal :visible="imgPreview.visible" :footer="null" @cancel="handleImgPreviewCancel">
+    <a-modal
+      title="查看图片"
+      :visible="imgPreview.visible"
+      :footer="null"
+      @cancel="handleImgPreviewCancel"
+    >
       <img alt="example" style="width: 100%" :src="imgPreview.img" />
     </a-modal>
   </div>
@@ -91,36 +144,46 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch, Emit } from "vue-property-decorator";
 import FormControl from "@/components/form-config-modal/FormControl.vue";
+import TextContent from "@/components/text-content/Index.vue";
+import Draggable from "vuedraggable";
 
-@Component({ components: { FormControl } })
-export default class recursiveModule extends Vue {
+@Component({
+  name: "RecursiveModule",
+  components: { FormControl, TextContent, Draggable }
+})
+export default class RecursiveModule extends Vue {
+  // 树形
   @Prop({ type: Array, default: () => [] }) trees!: any;
-
+  // 父节点Key值
   @Prop({ type: String, default: () => "root" }) parentNodeKey!: any;
-  
-
-  // 展开的值
-  unfoldKeys: any = [];
+  // 是否可操作（包含新增、编辑、删除等功能）
+  @Prop({ type: Boolean, default: () => false }) operable!: any;
+  // 控件使用类型 模板配置 module 填报 report
+  @Prop({ type: [String], default: () => "module" }) controlUsageType!: any;
+  // 内容是否只读
+  @Prop({ type: Boolean, default: () => false }) readOnly!: any;
+  // 查看类型：季报查看 quarter 季报汇总查看 quarterSummary 年报查看 year
+  @Prop({ type: [String], default: () => "quarter" }) previewType!: any;
+  // 上报类型（operable=false时有效）：季报 quarter 年报 year
+  @Prop({ type: [String], default: () => "quarter" }) reportType!: any;
 
   // 图片预览
-  imgPreview: any = {
+  private  imgPreview: any = {
     visible: false,
     img: null
   };
 
-  created() {
-    this.setUnfoldKeys();
-  }
+  // 表单控件拖拽配置
+  private  formControlDragSetting: any = {
+    enabled: true,
+    dragging: false
+  };
 
-  // 设置展开key值
-  setUnfoldKeys() {
-    this.unfoldKeys = [];
-    this.trees.forEach(e => {
-      if (e.key) {
-        this.unfoldKeys.push(e.key);
-      }
-    });
-  }
+  // 模板拖拽配置
+  private moduleDragSetting: any = {
+    enabled: true,
+    dragging: false
+  };
 
   @Emit("add-child-module") addChildModule(node: any) {}
 
@@ -128,8 +191,15 @@ export default class recursiveModule extends Vue {
   @Emit("del-module") delModule(moduleIndex: number, parentNodeKey: string) {}
 
   @Emit("add-form-control") addFormControl(node: any) {}
-  @Emit("edit-form-control") editFormControl(parentNode: any,form: any,formIndex: number) {}
-  @Emit("del-form-control") delFormControl(formIndex: number, parentNodeKey: string) {}
+  @Emit("edit-form-control") editFormControl(
+    parentNode: any,
+    form: any,
+    formIndex: number
+  ) {}
+  @Emit("del-form-control") delFormControl(
+    formIndex: number,
+    parentNodeKey: string
+  ) {}
 
   showRemark(item) {
     if (
@@ -183,6 +253,16 @@ export default class recursiveModule extends Vue {
     this.imgPreview.img = file.url || file.thumbUrl;
     this.imgPreview.visible = true;
   }
+
+  // 模板拖拽成功后的回调
+  handleModuleMove(e) {
+    // console.log("Future index: " + e.draggedContext.futureIndex);
+  }
+
+  // 表单拖拽成功后的回调
+  handleFormControlMove(e) {
+    // console.log("Future index: " + e.draggedContext.futureIndex);
+  }
 }
 </script>
 <style lang="less">
@@ -231,16 +311,30 @@ export default class recursiveModule extends Vue {
       padding: 0 10px;
     }
 
+    &__name {
+      max-width: 460px;
+      font-weight: bold;
+
+      &.w-100perent {
+        max-width: 98%;
+      }
+    }
+
     &__question {
       margin-left: 10px;
     }
+  }
+
+  &-drag {
+    cursor: move;
+    color: #2189ce;
   }
 }
 
 .form-control {
   display: flex;
-  align-items: center;
-  padding: 10px 0;
+  // align-items: center;
+  padding: 10px 10px;
   position: relative;
 
   &:hover {
@@ -250,24 +344,8 @@ export default class recursiveModule extends Vue {
     }
   }
 
-  &.label-top10 {
-    margin-top: 10px;
-    align-items: baseline;
-  }
-
-  &__label {
-    text-align: right;
-    margin-right: 10px;
-    min-width: 300px;
-  }
-
-  &__required {
-    color: #f5222d;
-    font-family: SimSun, sans-serif;
-  }
-
-  &__question {
-    margin-right: 5px;
+  &__content {
+    width: 100%;
   }
 
   &__operate {
@@ -279,6 +357,10 @@ export default class recursiveModule extends Vue {
       font-size: 16px;
       cursor: pointer;
 
+      &.form-control-drag {
+        cursor: move;
+      }
+
       &:hover {
         color: #1da57a;
       }
@@ -288,5 +370,10 @@ export default class recursiveModule extends Vue {
 
 .empty-container {
   padding: 20px 0;
+}
+
+.ghost {
+  opacity: 0.5;
+  background: #c8ebfb;
 }
 </style>

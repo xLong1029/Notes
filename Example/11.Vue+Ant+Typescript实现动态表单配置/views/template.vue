@@ -5,27 +5,29 @@
       :title="`${template.name}-模板定义`"
       :footer="null"
       :maskClosable="false"
+      :centered="true"
       width="1000px"
       @cancel="close(false)"
       class="template-container"
       style="top:10px"
     >
       <div class="operate-container">
-        <a-button type="primary" @click="addModule" icon="plus-circle">
-          <span>新增模块</span>
-        </a-button>
-        <a-button type="primary" @click="saveTemplate" icon="folder">
-          <span>保存</span>
-        </a-button>
-        <span class="hint"><a-icon type="exclamation-circle" />注意：请时刻保存您的操作，以免数据丢失</span>
+        <span class="hint">
+          <a-icon type="exclamation-circle" />注意：请时刻保存您的操作，以免数据丢失
+        </span>
+        <span class="operate-btn">
+          <a-button type="primary" @click="addModule" icon="plus-circle">新增模块</a-button>
+          <a-button type="primary" @click="saveTemplate" icon="folder">保存</a-button>
+        </span>
       </div>
       <a-divider />
-      <div class="form-container">
+      <div class="report-info-container">
         <template v-if="!loading">
           <recursive-module
             v-if="template.trees.length"
             :trees="template.trees"
             :parent-node-key="'root'"
+            :operable="true"
             @add-child-module="addChildModule"
             @edit-module="editModule"
             @del-module="delModule"
@@ -47,6 +49,7 @@
       v-model="moduleModal.visible"
       :title="moduleModal.title"
       :maskClosable="false"
+      :centered="true"
       @ok="saveModule"
       @cancel="closeModuleModal"
     >
@@ -64,7 +67,6 @@
     </a-modal>
     <!-- 表单操作弹窗 -->
     <form-config-modal
-      
       :visible="formModal.visible"
       :parent-node="formModal.parentNode"
       :form-data="formModal.data"
@@ -77,48 +79,41 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch, Emit } from "vue-property-decorator";
+import {
+  Component,
+  Prop,
+  Vue,
+  Watch,
+  Emit,
+  Mixins
+} from "vue-property-decorator";
 import recursiveModule from "@/components/recursive-module/Index.vue";
 import formConfigModal from "@/components/form-config-modal/Index.vue";
+import templateMixin from "@/mixins/template";
 import axios from "axios";
 
 @Component({ components: { recursiveModule, formConfigModal } })
-export default class SubmitTemplate extends Vue {
-  @Prop({ type: [Boolean], default: () => false }) visible!: Boolean;
-
+export default class SubmitTemplate extends Mixins(templateMixin) {
   @Prop({ type: [Number, String], default: () => {} }) id!: Number | String;
 
   @Prop({ type: [Array], default: () => [] }) formControlType!: any;
 
-  // 弹窗可见性
-  showModal: Boolean = false;
-
-  // 模板数据
-  template: any = {
-    id: null,
-    name: "",
-    trees: []
-  };
-
   // 模块弹窗
-  moduleModal: any = {};
+  private moduleModal: any = {};
   // 模块表单
-  moduleForm: any = {};
+  private moduleForm: any = {};
 
   // 表单弹窗
-  formModal: any = {};
+  private formModal: any = {};
 
   // 控件类型
-  controlType: any = [];
+  private controlType: any = [];
 
   // 父节点Key值
-  parentNodeKey: any = null;
+  private parentNodeKey: any = null;
 
   // 自增Id
-  increaseId: number = 1;
-
-  // 加载状态
-  loading: boolean = false;
+  private increaseId: number = 1;
 
   created() {
     this.moduleForm = this.$form.createForm(this);
@@ -131,10 +126,6 @@ export default class SubmitTemplate extends Vue {
       this.resetModal();
     }
   }
-
-  @Emit("ok") comfir(trees: any) {}
-
-  @Emit("cancel") close(visible: Boolean) {}
 
   // 重置弹窗
   resetModal() {
@@ -165,21 +156,6 @@ export default class SubmitTemplate extends Vue {
         this.setModuleKey(this.template.trees);
       })
       .catch(err => this.$message.error(err.message));
-  }
-
-  // 递归添加添加唯一ke值
-  setModuleKey(trees) {
-    trees.forEach(e => {
-      e.key = `default-${e.id}`;
-      if (e.children && e.children.length) {
-        this.setModuleKey(e.children);
-      }
-      if (e.formControls && e.formControls.length) {
-        this.setModuleKey(e.formControls);
-      }
-    });
-
-    this.loading = false;
   }
 
   // 递归查找模块
@@ -394,8 +370,10 @@ export default class SubmitTemplate extends Vue {
       }
       // 编辑
       else {
-        console.log(params);
-        parentNode.formControls[index] = { ...parentNode.formControls[index], ...params };
+        parentNode.formControls[index] = {
+          ...parentNode.formControls[index],
+          ...params
+        };
 
         // 强制更新树形数据
         const trees = JSON.parse(JSON.stringify(this.template.trees));
@@ -419,60 +397,15 @@ export default class SubmitTemplate extends Vue {
 <style lang="less">
 .template-container {
   /deep/ .ant-modal-body {
-    padding: 15px 20px;
+    padding: 0;
   }
 
   /deep/ .ant-divider-horizontal {
-    margin: 15px 0 0 0;
+    margin: 0;
   }
 }
 </style>
 <style lang="less" scoped>
-@height: calc(100vh - 155px);
-.form-container {
-  height: @height;
-  overflow-y: auto;
-}
-
-.loading-container {
-  width: 100%;
-  height: @height;
-  text-align: center;
-  line-height: @height;
-}
-
-.empty-container {
-  height: @height;
-  padding-top: 30px;
-}
-
-.operate-container{
-  .hint{
-    color: #f5222d;
-    float: right;
-    >i{
-      margin-right: 5px;
-    }
-  }
-}
-
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-/* 滚动槽 */
-::-webkit-scrollbar-track {
-  border-radius: 10px;
-  box-shadow: inset 0 0 6px #eee;
-  -webkit-box-shadow: inset 0 0 6px #eee;
-}
-
-/* 滚动条滑块 */
-::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 10px;
-  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
-}
+@import "./../../../../assets/theme/styles/rubbish-score/template.less";
+@import "./../../../../assets/theme/styles/rubbish-score/scroll-bar.less";
 </style>
