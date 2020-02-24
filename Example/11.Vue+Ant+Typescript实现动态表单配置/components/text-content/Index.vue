@@ -8,9 +8,13 @@
       <template v-if="previewType === 'quarter'">
         <div class="text-content__label">{{ data.name }}:</div>
         <div class="text-content__content">
+          <!-- 数字 -->
+          <template v-if="data.type === 3">
+            <span>{{ data.value && data.unit ? data.value + data.unit : "--" }}</span>
+          </template>
           <!-- 单选、日期 -->
           <template
-            v-if="data.type === 4 || data.type === 6 || data.type === 7"
+            v-else-if="data.type === 4 || data.type === 6 || data.type === 7"
           >{{ data.valueStr | notNull }}</template>
           <!-- 多选 -->
           <template v-else-if="data.type === 5">
@@ -56,11 +60,18 @@
                   :key="'tr' + index"
                   class="info-table__tr"
                 >
-                  <th class="info-table__th" :width="previewType === 'year' ? 150 : 200">{{ item.deptName | notNull }}</th>
+                  <th
+                    class="info-table__th"
+                    :width="previewType === 'year' ? 150 : 200"
+                  >{{ item.deptName | notNull }}</th>
                   <td class="info-table__td">
+                    <!-- 数字 -->
+                    <template v-if="data.type === 3">
+                      <span>{{ item.value && item.unit ? item.value + item.unit : "--" }}</span>
+                    </template>
                     <!-- 单选、日期 -->
                     <template
-                      v-if="data.type === 4 || data.type === 6 || data.type === 7"
+                      v-else-if="data.type === 4 || data.type === 6 || data.type === 7"
                     >{{ item.valueStr | notNull }}</template>
                     <!-- 多选 -->
                     <template v-else-if="data.type === 5">
@@ -163,10 +174,6 @@ export default class ModuleTextContent extends Vue {
   }
 
   &__tr {
-    // &:nth-child(2n) {
-    //   background: #fafafa;
-    // }
-
     &:last-child {
       .info-table__th,
       .info-table__td {
