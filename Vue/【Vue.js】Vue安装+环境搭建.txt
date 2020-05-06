@@ -38,7 +38,7 @@ Vue环境搭建和安装：
 
 8.安装vue脚手架
 	# 全局安装 vue-cli
-	$ npm install vue-cli -g
+	$ npm install -g @vue/cli
 
 9.创建项目
 	# 创建一个基于 "webpack" 模板的新项目
