@@ -41,7 +41,20 @@
 ## 九、创建项目
 > vue creat project-name //项目名称不支持驼峰，需要连字符进行拼接单词
 
-> ? Please pick a preset： //选择Vue2
+> ? Please pick a preset： //选择Manually select features
+
+> ? Check the features needed for your project: 
+```
+ ◉ Babel
+ ◯ TypeScript
+ ◯ Progressive Web App (PWA) Support
+ ◉ Router
+ ◉ Vuex
+ ◉ CSS Pre-processors
+❯◉ Linter / Formatter
+ ◯ Unit Testing
+ ◯ E2E Testing
+```
 
 ## 十、端口修改
 项目根目录的 vue.config.js 文件夹（如果没有就自己创建）中配置：
