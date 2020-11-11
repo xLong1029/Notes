@@ -39,7 +39,7 @@
 > npm install -g @vue/cl //全局安装
 
 ## 九、创建项目
-> vue creat project-name //项目名称不支持驼峰，需要连字符进行拼接单词
+> vue create project-name //项目名称不支持驼峰，需要连字符进行拼接单词
 
 > ? Please pick a preset： //选择Manually select features
 
