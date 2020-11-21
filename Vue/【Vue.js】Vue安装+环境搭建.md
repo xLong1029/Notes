@@ -13,8 +13,8 @@
 > npm config set cache "C:\Program Files\nodejs\node_cache"
 
 ## 四、配置好环境变量
-系统变量 NODE_PATH:C:\Program Files\nodejs
-用户变量 PATH:C:\Program Files\nodejs\node_global
+系统变量 NODE_PATH:C:\Program Files\nodejs  
+用户变量 PATH:C:\Program Files\nodejs\node_global  
 
 ## 五、安装淘宝镜像（可选）
 > npm install -g cnpm --registry=https://registry.npm.taobao.org  //安装淘宝镜像后npm 全部改成 cnpm 
