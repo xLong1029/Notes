@@ -36,7 +36,7 @@
 > npm install webpack-dev-server --save-dev
 
 ## 八、安装vue脚手架
-> npm install -g @vue/cl //全局安装
+> npm install -g @vue/cli //全局安装
 
 ## 九、创建项目
 > vue create project-name //项目名称不支持驼峰，需要连字符进行拼接单词
